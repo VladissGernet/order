@@ -3,6 +3,7 @@ import {initialPageCondition} from './initial-page-condition.js';
 
 initialPageCondition();
 initTabs();
+const replaceNumber = (string, position, newValue) => string.slice(0, position) + newValue + string.slice(position + 1);
 const backSpaceButton = 8;
 const numbersArray = ['0','1','2','3','4','5','6','8','9'];
 const restrictedSymbolsToRemove = ['(', ')', '-'];
@@ -38,11 +39,27 @@ const onPhoneFieldInput = (evt) => {
 };
 const onPhoneFieldKeydown = (evt) => {
   //KeyDownCheck
-  const isNotKeyNumberDown = /\d/.test(evt.key) === false;
-  const isNotBackSpaceButton = evt.keyCode !== backSpaceButton;
-  const isNotArrowRight = evt.key !== 'ArrowRight';
-  const isNotArrowLeft = evt.key !== 'ArrowLeft';
-  if (isNotKeyNumberDown && isNotBackSpaceButton && isNotArrowRight && isNotArrowLeft) {
+  const checkAllowedKeys = () => {
+    const isShortcutCopy = evt.ctrlKey && evt.keyCode === 67;
+    const isShortcutHighlight = evt.ctrlKey && evt.keyCode === 65;
+    const isShortcutInsert = evt.ctrlKey && evt.keyCode === 86;
+    const isKeyNumberDown = /\d/.test(evt.key);
+    const isBackSpaceButton = evt.keyCode === backSpaceButton;
+    const isArrowRight = evt.key === 'ArrowRight';
+    const isArrowLeft = evt.key === 'ArrowLeft';
+    const keysArray = [
+      isShortcutCopy,
+      isShortcutHighlight,
+      isShortcutInsert,
+      isKeyNumberDown,
+      isBackSpaceButton,
+      isArrowRight,
+      isArrowLeft
+    ];
+    return keysArray.includes(true);
+  };
+  const isNotAllowedKey = checkAllowedKeys() === false;
+  if (isNotAllowedKey) {
     evt.preventDefault();
   }
   const input = evt.target;
@@ -63,30 +80,18 @@ const onPhoneFieldKeydown = (evt) => {
       input.setSelectionRange(selectionStart - 1, selectionStart - 1);
     }
   }
-  if (isNotArrowLeft === true) {
-    const inputValue = getFieldNumbersValue(input);
-    let formattedValue = '';
-    if (inputValue.length > 1 && inputValue.length < 4) {
-      formattedValue += `+7(${inputValue.substring(1, 4)})${input.value.substring(6, 16)}`;
-    }
-    // if (inputValue.length > 4) {
-    //   formattedValue += `)${inputValue.substring(4, 7)}`;
-    // }
-    // if (inputValue.length > 7) {
-    //   formattedValue += `-${inputValue.substring(7, 9)}`;
-    // }
-    // if (inputValue.length > 9) {
-    //   formattedValue += `-${inputValue.substring(9, 11)}`;
-    // }
-    // решить вопрос с неправильным удалением с середины
-    input.value = formattedValue;
-  }
+  // if (/\d/.test(evt.key)) {
+  //   const newValue = replaceNumber(input.value, selectionStart, evt.key);
+  //   input.value = newValue;
+  //   //Остановился здесь. Неправильная замена символов
+  // }
+
+  // console.log(inputValueStart, inputValueEnd)
+  // console.log(input.value[selectionStart - 1])
+
 };
 phoneField.addEventListener('input', onPhoneFieldInput);
 phoneField.addEventListener('keydown', onPhoneFieldKeydown);
-
-
-
 
 
 
