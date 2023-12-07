@@ -4,11 +4,11 @@ import {initialPageCondition} from './initial-page-condition.js';
 initialPageCondition();
 initTabs();
 const replaceNumber = (string, position) => string.slice(0, position) + string.slice(position + 1);
-const backSpaceButton = 8;
 const numbersArray = ['0','1','2','3','4','5','6','8','9'];
 const restrictedSymbolsToRemove = ['(', ')', '-'];
 const phoneField = document.querySelector('#phone-pick-up');
 const getFieldNumbersValue = (value) => value.replace(/\D/g, '');
+//input check
 const onPhoneFieldInput = (evt) => {
   const input = evt.target;
   const selectionStart = input.selectionStart;
@@ -18,13 +18,14 @@ const onPhoneFieldInput = (evt) => {
   const inputValue = getFieldNumbersValue(input.value);
   let formattedValue = '';
   if (inputValue[0] === '7') {
-    formattedValue += '+7';
+    formattedValue += '+7(';
   }
   if (numbersArray.indexOf(inputValue[0]) > -1) {
+    formattedValue = '';
     formattedValue += `+7(${inputValue[0]}`;
   }
   if (inputValue.length > 1) {
-    formattedValue += `(${inputValue.substring(1, 4)}`;
+    formattedValue += `${inputValue.substring(1, 4)}`;
   }
   if (inputValue.length > 4) {
     formattedValue += `)${inputValue.substring(4, 7)}`;
@@ -36,7 +37,6 @@ const onPhoneFieldInput = (evt) => {
     formattedValue += `-${inputValue.substring(9, 11)}`;
   }
   input.value = formattedValue;
-  input.setSelectionRange(2,3);
 };
 //KeyDownCheck
 const checkAllowedKeys = (evt) => {
@@ -44,7 +44,7 @@ const checkAllowedKeys = (evt) => {
   const isShortcutHighlight = evt.ctrlKey && evt.keyCode === 65;
   const isShortcutInsert = evt.ctrlKey && evt.keyCode === 86;
   const isKeyNumberDown = /\d/.test(evt.key);
-  const isBackSpaceButton = evt.keyCode === backSpaceButton;
+  const isBackSpaceButton = evt.key === 'Backspace';
   const isArrowRight = evt.key === 'ArrowRight';
   const isArrowLeft = evt.key === 'ArrowLeft';
   const keysArray = [
@@ -58,6 +58,7 @@ const checkAllowedKeys = (evt) => {
   ];
   return keysArray.includes(true);
 };
+//on keydown
 const onPhoneFieldKeydown = (evt) => {
   const isNotAllowedKey = checkAllowedKeys(evt) === false;
   if (isNotAllowedKey) {
@@ -66,14 +67,15 @@ const onPhoneFieldKeydown = (evt) => {
   const input = evt.target;
   //Check selection
   const selectionStart = input.selectionStart;
-  if (selectionStart === input.value.length) {
-    return;
-  }
   //check symbol to remove
   const symbolToRemove = input.value[selectionStart - 1];
-  if (evt.keyCode === backSpaceButton) {
-    if (input.value.length > 4 && selectionStart < 4) {
+  if (evt.key === 'Backspace') {
+    if (input.value.length >= 4 && selectionStart <= 3) {
       evt.preventDefault();
+      return;
+    }
+    if (input.value.length === 3 && selectionStart === 3) {
+      input.value = '';
       return;
     }
     if (restrictedSymbolsToRemove.indexOf(symbolToRemove) > -1) {
@@ -84,10 +86,11 @@ const onPhoneFieldKeydown = (evt) => {
     const inputValue = getFieldNumbersValue(newValue);
     let formattedValue = '';
     if (inputValue[0] === '7') {
-      formattedValue += '+7';
+      formattedValue += '+7(';
     }
     if (inputValue.length > 1) {
-      formattedValue += `(${inputValue.substring(1, 4)}`;
+      formattedValue = '';
+      formattedValue = `+7(${inputValue.substring(1, 4)}`;
     }
     if (inputValue.length > 4) {
       formattedValue += `)${inputValue.substring(4, 7)}`;
@@ -100,18 +103,11 @@ const onPhoneFieldKeydown = (evt) => {
     }
     evt.preventDefault();
     input.value = formattedValue;
-    //Перемещает курсор на 1 символ влево
     input.setSelectionRange(selectionStart - 1, selectionStart - 1);
-    /*
-    остановился на удалении символов, удалении перед +7, и на добавлении символов от середины.
-     */
   }
 };
 phoneField.addEventListener('input', onPhoneFieldInput);
 phoneField.addEventListener('keydown', onPhoneFieldKeydown);
-
-
-
 
 
 
