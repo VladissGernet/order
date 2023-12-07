@@ -71,31 +71,6 @@ const onPhoneFieldKeydown = (evt) => {
   const selectionStart = input.selectionStart;
   //check symbol to remove
   const symbolToRemove = input.value[selectionStart - 1];
-  if (/\d/.test(evt.key)) {
-    //Остановился на добавлении символов от середины
-    // const inputValue = getFieldNumbersValue(input.value);
-    // let formattedValue = '';
-    // if (inputValue[0] === '7') {
-    //   formattedValue += '+7(';
-    // }
-    // if (numbersArray.indexOf(inputValue[0]) > -1) {
-    //   formattedValue = '';
-    //   formattedValue += `+7(${inputValue[0]}`;
-    // }
-    // if (inputValue.length > 1) {
-    //   formattedValue += `${inputValue.substring(1, 4)}`;
-    // }
-    // if (inputValue.length > 4) {
-    //   formattedValue += `)${inputValue.substring(4, 7)}`;
-    // }
-    // if (inputValue.length > 7) {
-    //   formattedValue += `-${inputValue.substring(7, 9)}`;
-    // }
-    // if (inputValue.length > 9) {
-    //   formattedValue += `-${inputValue.substring(9, 11)}`;
-    // }
-    // input.value = formattedValue;
-  }
   if (evt.key === 'Backspace' || evt.key === 'Delete') {
     if (input.value.length >= 4 && selectionStart <= 3) {
       evt.preventDefault();
