@@ -12,9 +12,6 @@ const getFieldNumbersValue = (value) => value.replace(/\D/g, '');
 const onPhoneFieldInput = (evt) => {
   const input = evt.target;
   const selectionStart = input.selectionStart;
-  if (selectionStart !== input.value.length) {
-    return;
-  }
   const inputValue = getFieldNumbersValue(input.value);
   let formattedValue = '';
   if (inputValue[0] === '7') {
@@ -37,6 +34,7 @@ const onPhoneFieldInput = (evt) => {
     formattedValue += `-${inputValue.substring(9, 11)}`;
   }
   input.value = formattedValue;
+  input.setSelectionRange(selectionStart, selectionStart);
 };
 //KeyDownCheck
 const checkAllowedKeys = (evt) => {
@@ -69,9 +67,6 @@ const onPhoneFieldKeydown = (evt) => {
   const input = evt.target;
   //Check selection
   const selectionStart = input.selectionStart;
-  if (selectionStart !== input.value.length) {
-    input.setSelectionRange(selectionStart - 1, selectionStart - 1);
-  }
   //check symbol to remove
   const symbolToRemove = input.value[selectionStart - 1];
   if (evt.key === 'Backspace' || evt.key === 'Delete') {
