@@ -8,7 +8,7 @@ const numbersArray = ['0','1','2','3','4','5','6','8','9'];
 const restrictedSymbolsToRemove = ['(', ')', '-'];
 const phoneField = document.querySelector('#phone-pick-up');
 const getFieldNumbersValue = (value) => value.replace(/\D/g, '');
-//input check
+//on input
 const onPhoneFieldInput = (evt) => {
   const input = evt.target;
   const selectionStart = input.selectionStart;
@@ -69,6 +69,9 @@ const onPhoneFieldKeydown = (evt) => {
   const input = evt.target;
   //Check selection
   const selectionStart = input.selectionStart;
+  if (selectionStart !== input.value.length) {
+    input.setSelectionRange(selectionStart - 1, selectionStart - 1);
+  }
   //check symbol to remove
   const symbolToRemove = input.value[selectionStart - 1];
   if (evt.key === 'Backspace' || evt.key === 'Delete') {
