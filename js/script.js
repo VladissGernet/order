@@ -70,6 +70,7 @@ const onPhoneFieldKeydown = (evt) => {
   //check symbol to remove
   const symbolToRemove = input.value[selectionStart - 1];
   if (evt.key === 'Backspace' || evt.key === 'Delete') {
+    //checking the cursor at the beginning of the field
     if (input.value.length >= 4 && selectionStart <= 3) {
       evt.preventDefault();
       return;
@@ -78,9 +79,14 @@ const onPhoneFieldKeydown = (evt) => {
       input.value = '';
       return;
     }
+    //checking restricted values to remove
     if (restrictedSymbolsToRemove.indexOf(symbolToRemove) > -1) {
       evt.preventDefault();
       input.setSelectionRange(selectionStart - 1, selectionStart - 1);
+    }
+    const highlightedValue = getFieldNumbersValue(window.getSelection().toString());
+    if (highlightedValue.length > 0) {
+      return;
     }
     const newValue = replaceNumber(input.value, selectionStart - 1);
     const inputValue = getFieldNumbersValue(newValue);
