@@ -7,8 +7,6 @@ initialPageCondition();
 initTabs();
 addPhoneMask();
 
-// input-wrapper--error adds error
-
 //pick-up block elements.
 const pickUpSubmit = pickUpBlock.querySelector('.form__submit-btn');
 const pickUpPhone = pickUpBlock.querySelector('[name="phone"]');
@@ -46,10 +44,14 @@ const updateSubmitHelp = (blockContainer) => {
   });
 };
 
+//pick-up phone oninput
+const onPhoneFieldInput = () => {
+  checkPhoneInput(pickUpPhone);
+  updateSubmitHelp(pickUpBlock);
+};
+pickUpPhone.addEventListener('input', onPhoneFieldInput);
+
 //pick-up submit
-pickUpSubmit.disabled = false;
-pickUpSubmitContainer.style.display = 'none';
-pickUpSubmitHelp.innerHTML = '';
 const onSubmitButtonClick = (evt) => {
   evt.preventDefault();
   checkPhoneInput(pickUpPhone);
