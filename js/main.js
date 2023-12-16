@@ -2,6 +2,7 @@ import {initTabs} from './init-tabs.js';
 import {initialPageCondition} from './initial-page-condition.js';
 import {addPhoneMask} from './masks.js';
 import {pickUpBlock} from './elements.js';
+import {getData} from './load-data.js';
 
 initialPageCondition();
 initTabs();
@@ -58,3 +59,7 @@ const onSubmitButtonClick = (evt) => {
   updateSubmitHelp(pickUpBlock);
 };
 pickUpSubmit.addEventListener('click', onSubmitButtonClick);
+
+getData().then((data) => {
+  console.log(data);
+});
