@@ -1,18 +1,19 @@
 import {initTabs} from './init-tabs.js';
 import {initialPageCondition} from './initial-page-condition.js';
 import {addPhoneMask} from './masks.js';
-import {pickUpBlock} from './elements.js';
+import {
+  pickUpBlock,
+  pickUpSubmitHelp,
+  pickUpSubmitContainer,
+  pickUpPhone,
+  pickUpSubmit,
+  citiesContainer
+} from './elements.js';
 import {getData} from './load-data.js';
 
 initialPageCondition();
 initTabs();
 addPhoneMask();
-
-//pick-up block elements.
-const pickUpSubmit = pickUpBlock.querySelector('.form__submit-btn');
-const pickUpPhone = pickUpBlock.querySelector('[name="phone"]');
-const pickUpSubmitContainer = pickUpBlock.querySelector('.form__submit-state');
-const pickUpSubmitHelp = pickUpSubmitContainer.querySelector('.form__submit-help');
 
 //input phone error
 const checkPhoneInput = (inputField) => {
@@ -60,6 +61,29 @@ const onSubmitButtonClick = (evt) => {
 };
 pickUpSubmit.addEventListener('click', onSubmitButtonClick);
 
+//removes all elements in container
+const clearCitiesContainer = (...elements) => {
+  const elementsToRemove = Array.from(elements.reduce((acc, currentValue) =>
+    Array.from(acc).concat(Array.from(currentValue))));
+  elementsToRemove.forEach((element) => element.remove());
+};
+
+const initialCitiesInputs = citiesContainer.querySelectorAll('input');
+const initialCitiesLabels = citiesContainer.querySelectorAll('label');
+clearCitiesContainer(initialCitiesInputs, initialCitiesLabels);
+
+//constant
+const initialCitySelection = 'Санкт-Петербург';
+
+//Data getter
 getData().then((data) => {
-  console.log(data);
+  const {cities} = data;
+  cities.forEach((cityElement) => {
+    const {city, 'city-id': cityId} = cityElement;
+    const isChecked = (city === initialCitySelection) ? ' checked' : '';
+    citiesContainer.insertAdjacentHTML('beforeend', `
+      <input id="pick-up-${cityId}" type="radio" name="city" value="${cityId}" ${isChecked}>
+      <label for="pick-up-${cityId}">${city}</label>
+    `);
+  });
 });
