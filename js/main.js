@@ -6,6 +6,7 @@ import {clearInputsWithLabels} from './util.js';
 import {fillCitiesContainer} from './fill-cities.js';
 import {defaultCitySelection} from './constants.js';
 import {fillCityAddresses} from './fill-city-addresses.js';
+import {initButtonCityClickHandler} from './init-button-city-click-handler.js';
 import {
   pickUpBlock,
   pickUpSubmitHelp,
@@ -79,6 +80,7 @@ getData().then((data) => {
     lat: deliveryPoints[0].coordinates[0],
     lng: deliveryPoints[0].coordinates[1]
   };
+
   //map
   const map = L.map('order-map', {
     center: defaultCoordinates,
@@ -87,24 +89,15 @@ getData().then((data) => {
   L.tileLayer(TILE_LAYER, {
     attribution: COPYRIGHT
   }).addTo(map);
-});
+  initButtonCityClickHandler(citiesData);
 
-//init city click handler
-let previousButtonValue = '';
-const onCityClick = (evt)=> {
-  const cityButton = evt.target.closest('[name="city"]');
-  if (cityButton === null) {
-    return;
-  }
-  if (cityButton.value === previousButtonValue) {
-    return;
-  }
-  previousButtonValue = cityButton.value;
-  clearInputsWithLabels(addressContainer);
-  const selectedCityButtonId = cityButton.value;
-  const selectedCity = Object.values(citiesData).find((city) => city['city-id'] === selectedCityButtonId);
-  fillCityAddresses(selectedCity['delivery-points']);
-};
-citiesContainer.addEventListener('click', onCityClick);
+  addressContainer.addEventListener('click', (evt) => {
+    const addressButton = evt.target.closest('[name="led-address"]');
+    if (addressButton === null) {
+      return;
+    }
+    console.log(addressButton)
+  });
+});
 
 
