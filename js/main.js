@@ -61,20 +61,32 @@ pickUpSubmit.addEventListener('click', onSubmitButtonClick);
 clearInputsWithLabels(citiesContainer);
 clearInputsWithLabels(addressContainer);
 
-//init default points
-const initDefaultPoints = (data) => {
-  fillCitiesContainer(data);
-  const defaultCityAddresses = data.find((cityElement) => cityElement.city === defaultCitySelection);
-  const {'delivery-points': deliveryPoints} = defaultCityAddresses;
-  fillCityAddresses(deliveryPoints);
-};
+//constants
+const COPYRIGHT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const ZOOM = 11;
 
-//get cities data
+//when cities data are received
 let citiesData = {};
 getData().then((data) => {
   const {cities} = data;
   citiesData = Object.assign({}, cities);
-  initDefaultPoints(cities);
+  fillCitiesContainer(cities);
+  const defaultCityAddresses = cities.find((cityElement) => cityElement.city === defaultCitySelection);
+  const {'delivery-points': deliveryPoints} = defaultCityAddresses;
+  fillCityAddresses(deliveryPoints);
+  const defaultCoordinates = {
+    lat: deliveryPoints[0].coordinates[0],
+    lng: deliveryPoints[0].coordinates[1]
+  };
+  //map
+  const map = L.map('order-map', {
+    center: defaultCoordinates,
+    zoom: ZOOM
+  });
+  L.tileLayer(TILE_LAYER, {
+    attribution: COPYRIGHT
+  }).addTo(map);
 });
 
 //init city click handler
@@ -96,20 +108,3 @@ const onCityClick = (evt)=> {
 citiesContainer.addEventListener('click', onCityClick);
 
 
-//constants
-const COPYRIGHT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-const ZOOM = 13;
-const startCoordinates = {
-  lat: 35.68172,
-  lng: 139.75392,
-};
-
-//map
-const map = L.map('order-map', {
-  center: startCoordinates,
-  zoom: ZOOM
-});
-L.tileLayer(TILE_LAYER, {
-  attribution: COPYRIGHT
-}).addTo(map);
