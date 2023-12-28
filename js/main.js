@@ -1,6 +1,8 @@
 import {initTabs} from './init-tabs.js';
 import {initialPageCondition} from './initial-page-condition.js';
 import {addPhoneMask} from './masks.js';
+import {checkPhoneInput} from './check-phone-input.js';
+import {clearInputsWithLabels} from './util.js';
 import {
   pickUpBlock,
   pickUpSubmitHelp,
@@ -15,17 +17,6 @@ import {getData} from './load-data.js';
 initialPageCondition();
 initTabs();
 addPhoneMask();
-
-//input phone error
-const checkPhoneInput = (inputField) => {
-  const inputFieldLength = inputField.value.length;
-  const isPhoneFieldFilledIn = inputField.minLength === inputFieldLength && inputField.maxLength === inputFieldLength;
-  if (isPhoneFieldFilledIn) {
-    inputField.closest('.input-wrapper').classList.remove('input-wrapper--error');
-    return;
-  }
-  inputField.closest('.input-wrapper').classList.add('input-wrapper--error');
-};
 
 //submit button conditions for unblocking
 const updateSubmitHelp = (blockContainer) => {
@@ -62,21 +53,9 @@ const onSubmitButtonClick = (evt) => {
 };
 pickUpSubmit.addEventListener('click', onSubmitButtonClick);
 
-//removes all elements in container
-const clearCitiesContainer = (...elements) => {
-  const elementsToRemove = Array.from(elements.reduce((acc, currentValue) =>
-    Array.from(acc).concat(Array.from(currentValue))));
-  elementsToRemove.forEach((element) => element.remove());
-};
-
-const initialCitiesInputs = citiesContainer.querySelectorAll('input');
-const initialCitiesLabels = citiesContainer.querySelectorAll('label');
-clearCitiesContainer(initialCitiesInputs, initialCitiesLabels);
-
-//removes initial addresses
-const initialAddressInputs = addressContainer.querySelectorAll('input');
-const initialAddressLabels = addressContainer.querySelectorAll('label');
-clearCitiesContainer(initialAddressInputs, initialAddressLabels);
+//clear initial city and points containers
+clearInputsWithLabels(citiesContainer);
+clearInputsWithLabels(addressContainer);
 
 //constant
 const defaultCitySelection = 'Санкт-Петербург';
@@ -138,9 +117,7 @@ const onCityClick = (evt)=> {
     return;
   }
   previousButtonValue = cityButton.value;
-  const addressInputs = addressContainer.querySelectorAll('input');
-  const addressLabels = addressContainer.querySelectorAll('label');
-  clearCitiesContainer(addressInputs, addressLabels);
+  clearInputsWithLabels(addressContainer);
   const selectedCityButtonId = cityButton.value;
   const selectedCity = Object.values(citiesData).find((city) => city['city-id'] === selectedCityButtonId);
   fillCityAddresses(selectedCity['delivery-points']);
