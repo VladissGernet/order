@@ -4,7 +4,7 @@ import {addPhoneMask} from './masks.js';
 import {checkPhoneInput} from './check-phone-input.js';
 import {clearInputsWithLabels} from './util.js';
 import {fillCitiesContainer} from './fill-cities.js';
-import {defaultCitySelection} from './constants.js';
+import {defaultCitySelection, mainPinIcon, icon} from './constants.js';
 import {fillCityAddresses} from './fill-city-addresses.js';
 import {initButtonCityClickHandler} from './init-button-city-click-handler.js';
 import {
@@ -89,14 +89,32 @@ getData().then((data) => {
   L.tileLayer(TILE_LAYER, {
     attribution: COPYRIGHT
   }).addTo(map);
-  initButtonCityClickHandler(citiesData);
+  const mainPinMarker = L.marker(defaultCoordinates, {
+    icon: mainPinIcon,
+  });
+  const markerGroup = L.layerGroup().addTo(map);
+  for (let i = 0; i < deliveryPoints.length; i++) {
+    const lat = deliveryPoints[i].coordinates[0];
+    const lng = deliveryPoints[i].coordinates[1];
+    const marker = L.marker({lat, lng}, {icon});
+    marker.addTo(markerGroup);
+  }
+  mainPinMarker.addTo(map);
+  //остановился на добавлении меток на карту
 
+  initButtonCityClickHandler(citiesData);
+  let previousButtonValue = '';
   addressContainer.addEventListener('click', (evt) => {
     const addressButton = evt.target.closest('[name="led-address"]');
     if (addressButton === null) {
       return;
     }
-    console.log(addressButton)
+    if (addressButton.value === previousButtonValue) {
+      return;
+    }
+    previousButtonValue = addressButton.value;
+    console.log(addressButton.value)
+    //добавить перемещение по карте потом
   });
 });
 
