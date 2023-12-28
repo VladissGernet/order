@@ -71,14 +71,11 @@ const initDefaultPoints = (data) => {
 
 //get cities data
 let citiesData = {};
-const initDefaultCityPoints = () => {
-  getData().then((data) => {
-    const {cities} = data;
-    citiesData = Object.assign({}, cities);
-    initDefaultPoints(cities);
-  });
-};
-initDefaultCityPoints();
+getData().then((data) => {
+  const {cities} = data;
+  citiesData = Object.assign({}, cities);
+  initDefaultPoints(cities);
+});
 
 //init city click handler
 let previousButtonValue = '';
