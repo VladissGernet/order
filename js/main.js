@@ -82,9 +82,8 @@ clearCitiesContainer(initialAddressInputs, initialAddressLabels);
 const defaultCitySelection = 'Санкт-Петербург';
 const defaultAddressSelection = 1;
 
-//cities inter
-getData().then((data) => {
-  const {cities} = data;
+//fill cities
+const fillCitiesContainer = (cities) => {
   cities.forEach((cityElement) => {
     const {city, 'city-id': cityId} = cityElement;
     const isChecked = (city === defaultCitySelection) ? ' checked' : '';
@@ -93,8 +92,10 @@ getData().then((data) => {
       <label for="pick-up-${cityId}">${city}</label>
     `);
   });
-  const defaultCityAddresses = cities.find((cityElement) => cityElement.city === defaultCitySelection);
-  const {'delivery-points': deliveryPoints} = defaultCityAddresses;
+};
+
+//fill addresses
+const fillCityAddresses = (deliveryPoints) => {
   let cityAddressId = 0;
   deliveryPoints.forEach((cityPoint) => {
     const {address} = cityPoint;
@@ -105,5 +106,43 @@ getData().then((data) => {
     <label for="pick-up-led-address-${cityAddressId}">${address}</label>
   `);
   });
-});
+};
 
+//init default points
+const initDefaultPoints = (data) => {
+  fillCitiesContainer(data);
+  const defaultCityAddresses = data.find((cityElement) => cityElement.city === defaultCitySelection);
+  const {'delivery-points': deliveryPoints} = defaultCityAddresses;
+  fillCityAddresses(deliveryPoints);
+};
+
+//get cities data
+let citiesData = {};
+const initDefaultCityPoints = () => {
+  getData().then((data) => {
+    const {cities} = data;
+    citiesData = Object.assign({}, cities);
+    initDefaultPoints(cities);
+  });
+};
+initDefaultCityPoints();
+
+//init city click handler
+let previousButtonValue = '';
+const onCityClick = (evt)=> {
+  const cityButton = evt.target.closest('[name="city"]');
+  if (cityButton === null) {
+    return;
+  }
+  if (cityButton.value === previousButtonValue) {
+    return;
+  }
+  previousButtonValue = cityButton.value;
+  const addressInputs = addressContainer.querySelectorAll('input');
+  const addressLabels = addressContainer.querySelectorAll('label');
+  clearCitiesContainer(addressInputs, addressLabels);
+  const selectedCityButtonId = cityButton.value;
+  const selectedCity = Object.values(citiesData).find((city) => city['city-id'] === selectedCityButtonId);
+  fillCityAddresses(selectedCity['delivery-points']);
+};
+citiesContainer.addEventListener('click', onCityClick);
