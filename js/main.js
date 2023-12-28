@@ -3,6 +3,9 @@ import {initialPageCondition} from './initial-page-condition.js';
 import {addPhoneMask} from './masks.js';
 import {checkPhoneInput} from './check-phone-input.js';
 import {clearInputsWithLabels} from './util.js';
+import {fillCitiesContainer} from './fill-cities.js';
+import {defaultCitySelection} from './constants.js';
+import {fillCityAddresses} from './fill-city-addresses.js';
 import {
   pickUpBlock,
   pickUpSubmitHelp,
@@ -53,39 +56,10 @@ const onSubmitButtonClick = (evt) => {
 };
 pickUpSubmit.addEventListener('click', onSubmitButtonClick);
 
+///////////////////////////////////////////////////////////////////////////////////////
 //clear initial city and points containers
 clearInputsWithLabels(citiesContainer);
 clearInputsWithLabels(addressContainer);
-
-//constant
-const defaultCitySelection = 'Санкт-Петербург';
-const defaultAddressSelection = 1;
-
-//fill cities
-const fillCitiesContainer = (cities) => {
-  cities.forEach((cityElement) => {
-    const {city, 'city-id': cityId} = cityElement;
-    const isChecked = (city === defaultCitySelection) ? ' checked' : '';
-    citiesContainer.insertAdjacentHTML('beforeend', `
-      <input id="pick-up-${cityId}" type="radio" name="city" value="${cityId}" ${isChecked}>
-      <label for="pick-up-${cityId}">${city}</label>
-    `);
-  });
-};
-
-//fill addresses
-const fillCityAddresses = (deliveryPoints) => {
-  let cityAddressId = 0;
-  deliveryPoints.forEach((cityPoint) => {
-    const {address} = cityPoint;
-    cityAddressId++;
-    const isChecked = (cityAddressId === defaultAddressSelection) ? ' checked' : '';
-    addressContainer.insertAdjacentHTML('beforeend', `
-    <input id="pick-up-led-address-${cityAddressId}" type="radio" name="led-address" value="${address}" ${isChecked}>
-    <label for="pick-up-led-address-${cityAddressId}">${address}</label>
-  `);
-  });
-};
 
 //init default points
 const initDefaultPoints = (data) => {
