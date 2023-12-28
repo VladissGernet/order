@@ -146,3 +146,22 @@ const onCityClick = (evt)=> {
   fillCityAddresses(selectedCity['delivery-points']);
 };
 citiesContainer.addEventListener('click', onCityClick);
+
+
+//constants
+const COPYRIGHT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const ZOOM = 13;
+const startCoordinates = {
+  lat: 35.68172,
+  lng: 139.75392,
+};
+
+//map
+const map = L.map('order-map', {
+  center: startCoordinates,
+  zoom: ZOOM
+});
+L.tileLayer(TILE_LAYER, {
+  attribution: COPYRIGHT
+}).addTo(map);
