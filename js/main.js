@@ -4,7 +4,13 @@ import {addPhoneMask} from './masks.js';
 import {checkPhoneInput} from './check-phone-input.js';
 import {clearInputsWithLabels} from './util.js';
 import {fillCitiesContainer} from './fill-cities.js';
-import {defaultCitySelection, mainPinIcon} from './constants.js';
+import {
+  defaultCitySelection,
+  mainPinIcon,
+  COPYRIGHT,
+  TILE_LAYER,
+  ZOOM,
+} from './constants.js';
 import {fillCityAddresses} from './fill-city-addresses.js';
 import {initButtonCityClickHandler} from './init-button-city-click-handler.js';
 import {createMarkers} from './create-markers.js';
@@ -63,11 +69,6 @@ pickUpSubmit.addEventListener('click', onSubmitButtonClick);
 clearInputsWithLabels(citiesContainer);
 clearInputsWithLabels(addressContainer);
 
-//constants
-const COPYRIGHT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-const ZOOM = 11;
-
 //when cities data are received
 let citiesData = {};
 getData().then((data) => {
@@ -81,7 +82,6 @@ getData().then((data) => {
     lat: deliveryPoints[0].coordinates[0],
     lng: deliveryPoints[0].coordinates[1]
   };
-
   //map
   const map = L.map('order-map', {
     center: defaultCoordinates,
@@ -96,8 +96,7 @@ getData().then((data) => {
   const markerGroup = L.layerGroup().addTo(map);
   createMarkers(deliveryPoints, markerGroup);
   mainPinMarker.addTo(map);
-  //остановился на добавлении меток на карту
-
+  //add map updater
   initButtonCityClickHandler(citiesData);
   let previousButtonValue = '';
   addressContainer.addEventListener('click', (evt) => {

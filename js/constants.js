@@ -30,11 +30,17 @@ const icon = L.icon({
   iconSize: [iconConfig.default.width, iconConfig.default.height],
   iconAnchor: [iconConfig.default.anchorX, iconConfig.default.anchorY],
 });
+const COPYRIGHT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const ZOOM = 11;
 
 export {
   defaultCitySelection,
   defaultAddressSelection,
   receivingMethod,
   mainPinIcon,
-  icon
+  icon,
+  COPYRIGHT,
+  TILE_LAYER,
+  ZOOM,
 };
