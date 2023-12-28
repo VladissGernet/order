@@ -93,9 +93,9 @@ getData().then((data) => {
     icon: mainPinIcon,
   });
   const markerGroup = L.layerGroup().addTo(map);
-  for (let i = 0; i < deliveryPoints.length; i++) {
-    const lat = deliveryPoints[i].coordinates[0];
-    const lng = deliveryPoints[i].coordinates[1];
+  for (const point of deliveryPoints) {
+    const lat = point.coordinates[0];
+    const lng = point.coordinates[1];
     const marker = L.marker({lat, lng}, {icon});
     marker.addTo(markerGroup);
   }
