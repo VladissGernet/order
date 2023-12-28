@@ -7,7 +7,8 @@ const pickUpSubmit = pickUpBlock.querySelector('.form__submit-btn');
 const pickUpPhone = pickUpBlock.querySelector('[name="phone"]');
 const pickUpSubmitContainer = pickUpBlock.querySelector('.form__submit-state');
 const pickUpSubmitHelp = pickUpSubmitContainer.querySelector('.form__submit-help');
-const citiesContainer = pickUpBlock.querySelector('.input-wrapper--radio-group');
+const citiesContainer = pickUpBlock.querySelector('[data-radio-group="city"]');
+const addressContainer = pickUpBlock.querySelector('[data-radio-group="address"]');
 
 export {
   tabs,
@@ -18,5 +19,6 @@ export {
   pickUpPhone,
   pickUpSubmitHelp,
   pickUpSubmitContainer,
-  citiesContainer
+  citiesContainer,
+  addressContainer
 };

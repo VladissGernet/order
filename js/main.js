@@ -7,7 +7,8 @@ import {
   pickUpSubmitContainer,
   pickUpPhone,
   pickUpSubmit,
-  citiesContainer
+  citiesContainer,
+  addressContainer
 } from './elements.js';
 import {getData} from './load-data.js';
 
@@ -72,18 +73,37 @@ const initialCitiesInputs = citiesContainer.querySelectorAll('input');
 const initialCitiesLabels = citiesContainer.querySelectorAll('label');
 clearCitiesContainer(initialCitiesInputs, initialCitiesLabels);
 
-//constant
-const initialCitySelection = 'Санкт-Петербург';
+//removes initial addresses
+const initialAddressInputs = addressContainer.querySelectorAll('input');
+const initialAddressLabels = addressContainer.querySelectorAll('label');
+clearCitiesContainer(initialAddressInputs, initialAddressLabels);
 
-//Data getter
+//constant
+const defaultCitySelection = 'Санкт-Петербург';
+const defaultAddressSelection = 1;
+
+//cities inter
 getData().then((data) => {
   const {cities} = data;
   cities.forEach((cityElement) => {
     const {city, 'city-id': cityId} = cityElement;
-    const isChecked = (city === initialCitySelection) ? ' checked' : '';
+    const isChecked = (city === defaultCitySelection) ? ' checked' : '';
     citiesContainer.insertAdjacentHTML('beforeend', `
       <input id="pick-up-${cityId}" type="radio" name="city" value="${cityId}" ${isChecked}>
       <label for="pick-up-${cityId}">${city}</label>
     `);
   });
+  const defaultCityAddresses = cities.find((cityElement) => cityElement.city === defaultCitySelection);
+  const {'delivery-points': deliveryPoints} = defaultCityAddresses;
+  let cityAddressId = 0;
+  deliveryPoints.forEach((cityPoint) => {
+    const {address} = cityPoint;
+    cityAddressId++;
+    const isChecked = (cityAddressId === defaultAddressSelection) ? ' checked' : '';
+    addressContainer.insertAdjacentHTML('beforeend', `
+    <input id="pick-up-led-address-${cityAddressId}" type="radio" name="led-address" value="${address}" ${isChecked}>
+    <label for="pick-up-led-address-${cityAddressId}">${address}</label>
+  `);
+  });
 });
+
