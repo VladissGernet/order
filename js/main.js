@@ -4,9 +4,10 @@ import {addPhoneMask} from './masks.js';
 import {checkPhoneInput} from './check-phone-input.js';
 import {clearInputsWithLabels} from './util.js';
 import {fillCitiesContainer} from './fill-cities.js';
-import {defaultCitySelection, mainPinIcon, icon} from './constants.js';
+import {defaultCitySelection, mainPinIcon} from './constants.js';
 import {fillCityAddresses} from './fill-city-addresses.js';
 import {initButtonCityClickHandler} from './init-button-city-click-handler.js';
+import {createMarkers} from './create-markers.js';
 import {
   pickUpBlock,
   pickUpSubmitHelp,
@@ -93,12 +94,7 @@ getData().then((data) => {
     icon: mainPinIcon,
   });
   const markerGroup = L.layerGroup().addTo(map);
-  for (const point of deliveryPoints) {
-    const lat = point.coordinates[0];
-    const lng = point.coordinates[1];
-    const marker = L.marker({lat, lng}, {icon});
-    marker.addTo(markerGroup);
-  }
+  createMarkers(deliveryPoints, markerGroup);
   mainPinMarker.addTo(map);
   //остановился на добавлении меток на карту
 
