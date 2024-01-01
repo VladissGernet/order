@@ -1,5 +1,4 @@
-//Removes all selected elements in parameter
-import {mainPinIcon} from "./constants.js";
+import {mainPinIcon, ZOOM, MAP_SETTING_DURATION} from './constants.js';
 
 const removeSelectedElements = (...elements) => {
   const elementsToRemove = Array.from(elements.reduce((acc, currentValue) =>
@@ -11,10 +10,13 @@ const clearInputsWithLabels = (container) => {
   const containerLabels = container.querySelectorAll('label');
   removeSelectedElements(containerInputs, containerLabels);
 };
-const getTheFirstAddressCoordinates = (points) => ({
-  lat: points[0].coordinates[0],
-  lng: points[0].coordinates[1]
+const getAddressCoordinates = (point) => ({
+  lat: point.coordinates[0],
+  lng: point.coordinates[1]
 });
 const addMainPinMarker = (coordinates, layer) => L.marker(coordinates, {icon: mainPinIcon}).addTo(layer);
+const updateMapView = (map, coordinates) => {
+  map.setView(coordinates, ZOOM, {animate: true, duration: MAP_SETTING_DURATION});
+};
 
-export {removeSelectedElements, clearInputsWithLabels, getTheFirstAddressCoordinates, addMainPinMarker};
+export {removeSelectedElements, clearInputsWithLabels, getAddressCoordinates, addMainPinMarker, updateMapView};

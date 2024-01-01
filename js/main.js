@@ -4,7 +4,8 @@ import {addPhoneMask} from './masks.js';
 import {checkPhoneInput} from './check-phone-input.js';
 import {clearInputsWithLabels} from './util.js';
 import {fillCitiesContainer} from './fill-cities.js';
-import {getTheFirstAddressCoordinates, addMainPinMarker} from './util.js';
+import {initAddressClickHandler} from './init-address-click-handler.js';
+import {getAddressCoordinates, addMainPinMarker} from './util.js';
 import {
   defaultCitySelection,
   COPYRIGHT,
@@ -69,18 +70,22 @@ pickUpSubmit.addEventListener('click', onSubmitButtonClick);
 clearInputsWithLabels(citiesContainer);
 clearInputsWithLabels(addressContainer);
 //when cities data are received
-let citiesData = {};
+let selectedCityAddresses = [];
+const updateSelectedCityAddresses = (newAddresses) => {
+  selectedCityAddresses = [];
+  Object.assign(selectedCityAddresses, newAddresses);
+};
 getData().then((data) => {
   const {cities} = data;
-  citiesData = Object.assign({}, cities);
   fillCitiesContainer(cities);
   const defaultCityAddresses = cities.find((cityElement) => cityElement.city === defaultCitySelection);
   const {'delivery-points': deliveryPoints} = defaultCityAddresses;
+  updateSelectedCityAddresses(deliveryPoints);
   fillCityAddresses(deliveryPoints);
   //map
   const mapElement = document.querySelector('#order-map');
   const map = L.map('order-map', {
-    center: getTheFirstAddressCoordinates(deliveryPoints),
+    center: getAddressCoordinates(deliveryPoints[0]),
     zoom: ZOOM
   });
   L.tileLayer(TILE_LAYER, {attribution: COPYRIGHT}).on('load', () => {
@@ -88,17 +93,9 @@ getData().then((data) => {
   }).addTo(map);
   const markerGroup = L.layerGroup().addTo(map);
   createMarkers(deliveryPoints, markerGroup);
-  addMainPinMarker(getTheFirstAddressCoordinates(deliveryPoints), markerGroup);
-  initButtonCityClickHandler(citiesData, markerGroup, map);
-  let previousButtonValue = '';
-  addressContainer.addEventListener('click', (evt) => {
-    const addressButton = evt.target.closest('[name="led-address"]');
-    if (addressButton === null) {
-      return;
-    }
-    if (addressButton.value === previousButtonValue) {
-      return;
-    }
-    previousButtonValue = addressButton.value;
-  });
+  addMainPinMarker(getAddressCoordinates(deliveryPoints[0]), markerGroup);
+  initButtonCityClickHandler(cities, markerGroup, map);
+  initAddressClickHandler(addressContainer, markerGroup, map);
 });
+
+export {selectedCityAddresses, updateSelectedCityAddresses};
