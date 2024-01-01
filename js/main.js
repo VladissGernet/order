@@ -4,6 +4,7 @@ import {addPhoneMask} from './masks.js';
 import {checkPhoneInput} from './check-phone-input.js';
 import {clearInputsWithLabels} from './util.js';
 import {fillCitiesContainer} from './fill-cities.js';
+import {getTheFirstAddressCoordinates} from './util.js';
 import {
   defaultCitySelection,
   mainPinIcon,
@@ -77,19 +78,15 @@ getData().then((data) => {
   const defaultCityAddresses = cities.find((cityElement) => cityElement.city === defaultCitySelection);
   const {'delivery-points': deliveryPoints} = defaultCityAddresses;
   fillCityAddresses(deliveryPoints);
-  const defaultCoordinates = {
-    lat: deliveryPoints[0].coordinates[0],
-    lng: deliveryPoints[0].coordinates[1]
-  };
   //map
   const map = L.map('order-map', {
-    center: defaultCoordinates,
+    center: getTheFirstAddressCoordinates(deliveryPoints),
     zoom: ZOOM
   });
   L.tileLayer(TILE_LAYER, {
     attribution: COPYRIGHT
   }).addTo(map);
-  const mainPinMarker = L.marker(defaultCoordinates, {
+  const mainPinMarker = L.marker(getTheFirstAddressCoordinates(deliveryPoints), {
     icon: mainPinIcon,
   });
   const markerGroup = L.layerGroup().addTo(map);

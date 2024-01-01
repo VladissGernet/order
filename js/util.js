@@ -9,5 +9,9 @@ const clearInputsWithLabels = (container) => {
   const containerLabels = container.querySelectorAll('label');
   removeSelectedElements(containerInputs, containerLabels);
 };
+const getTheFirstAddressCoordinates = (points) => ({
+  lat: points[0].coordinates[0],
+  lng: points[0].coordinates[1]
+});
 
-export {removeSelectedElements, clearInputsWithLabels};
+export {removeSelectedElements, clearInputsWithLabels, getTheFirstAddressCoordinates};

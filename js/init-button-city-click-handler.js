@@ -1,4 +1,4 @@
-import {clearInputsWithLabels} from './util.js';
+import {clearInputsWithLabels, getTheFirstAddressCoordinates} from './util.js';
 import {addressContainer, citiesContainer} from './elements.js';
 import {fillCityAddresses} from './fill-city-addresses.js';
 import {createMarkers} from './create-markers.js';
@@ -20,8 +20,7 @@ const initButtonCityClickHandler = (citiesData, initialLayer, map) => {
     const selectedCity = Object.values(citiesData).find((city) => city['city-id'] === selectedCityButtonId);
     fillCityAddresses(selectedCity['delivery-points']);
     const selectedCityPoints = selectedCity['delivery-points'];
-    const lat = selectedCityPoints[0].coordinates[0];
-    const lng = selectedCityPoints[0].coordinates[1];
+    const {lat, lng} = getTheFirstAddressCoordinates(selectedCityPoints);
     initialLayer.clearLayers();
     map.setView([lat, lng], ZOOM, {animate: true, duration: 2.0});
     createMarkers(selectedCityPoints, initialLayer);
