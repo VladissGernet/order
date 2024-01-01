@@ -68,7 +68,6 @@ pickUpSubmit.addEventListener('click', onSubmitButtonClick);
 //clear initial city and points containers
 clearInputsWithLabels(citiesContainer);
 clearInputsWithLabels(addressContainer);
-
 //when cities data are received
 let citiesData = {};
 getData().then((data) => {
@@ -96,8 +95,7 @@ getData().then((data) => {
   const markerGroup = L.layerGroup().addTo(map);
   createMarkers(deliveryPoints, markerGroup);
   mainPinMarker.addTo(map);
-  //add map updater
-  initButtonCityClickHandler(citiesData);
+  initButtonCityClickHandler(citiesData, markerGroup, map);
   let previousButtonValue = '';
   addressContainer.addEventListener('click', (evt) => {
     const addressButton = evt.target.closest('[name="led-address"]');
@@ -108,9 +106,5 @@ getData().then((data) => {
       return;
     }
     previousButtonValue = addressButton.value;
-    console.log(addressButton.value)
-    //добавить перемещение по карте потом
   });
 });
-
-
