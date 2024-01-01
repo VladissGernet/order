@@ -4,10 +4,9 @@ import {addPhoneMask} from './masks.js';
 import {checkPhoneInput} from './check-phone-input.js';
 import {clearInputsWithLabels} from './util.js';
 import {fillCitiesContainer} from './fill-cities.js';
-import {getTheFirstAddressCoordinates} from './util.js';
+import {getTheFirstAddressCoordinates, addMainPinMarker} from './util.js';
 import {
   defaultCitySelection,
-  mainPinIcon,
   COPYRIGHT,
   TILE_LAYER,
   ZOOM,
@@ -86,12 +85,9 @@ getData().then((data) => {
   L.tileLayer(TILE_LAYER, {
     attribution: COPYRIGHT
   }).addTo(map);
-  const mainPinMarker = L.marker(getTheFirstAddressCoordinates(deliveryPoints), {
-    icon: mainPinIcon,
-  });
   const markerGroup = L.layerGroup().addTo(map);
   createMarkers(deliveryPoints, markerGroup);
-  mainPinMarker.addTo(map);
+  addMainPinMarker(getTheFirstAddressCoordinates(deliveryPoints), markerGroup);
   initButtonCityClickHandler(citiesData, markerGroup, map);
   let previousButtonValue = '';
   addressContainer.addEventListener('click', (evt) => {

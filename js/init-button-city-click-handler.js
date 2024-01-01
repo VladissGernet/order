@@ -1,4 +1,4 @@
-import {clearInputsWithLabels, getTheFirstAddressCoordinates} from './util.js';
+import {addMainPinMarker, clearInputsWithLabels, getTheFirstAddressCoordinates} from './util.js';
 import {addressContainer, citiesContainer} from './elements.js';
 import {fillCityAddresses} from './fill-city-addresses.js';
 import {createMarkers} from './create-markers.js';
@@ -24,6 +24,7 @@ const initButtonCityClickHandler = (citiesData, initialLayer, map) => {
     initialLayer.clearLayers();
     map.setView([lat, lng], ZOOM, {animate: true, duration: 2.0});
     createMarkers(selectedCityPoints, initialLayer);
+    addMainPinMarker(getTheFirstAddressCoordinates(selectedCityPoints) ,initialLayer);
   };
   citiesContainer.addEventListener('click', onCityClick);
 };
