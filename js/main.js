@@ -78,12 +78,13 @@ getData().then((data) => {
   const {'delivery-points': deliveryPoints} = defaultCityAddresses;
   fillCityAddresses(deliveryPoints);
   //map
+  const mapElement = document.querySelector('#order-map');
   const map = L.map('order-map', {
     center: getTheFirstAddressCoordinates(deliveryPoints),
     zoom: ZOOM
   });
-  L.tileLayer(TILE_LAYER, {
-    attribution: COPYRIGHT
+  L.tileLayer(TILE_LAYER, {attribution: COPYRIGHT}).on('load', () => {
+    mapElement.style.backgroundImage = 'none';
   }).addTo(map);
   const markerGroup = L.layerGroup().addTo(map);
   createMarkers(deliveryPoints, markerGroup);
