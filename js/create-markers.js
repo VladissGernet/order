@@ -15,10 +15,7 @@ const createMarkers = (points, layer) => {
         title: point.address,
       });
     marker.on('click', () => {
-      console.log(point.address);
-      console.log(addressContainer.querySelector('input[value="point.address"]'))
-      //остановился на создании переключателя адреса по клику на карте
-      //сейчас просто выводится в консоль адрес точки по которой кликнули
+      addressContainer.querySelector(`input[value="${point.address}"]`).click();
     });
     marker.addTo(layer);
   }
