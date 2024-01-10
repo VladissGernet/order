@@ -19,6 +19,7 @@ import {
 } from './elements.js';
 import { getData } from './load-data.js';
 import { initMap } from './map.js';
+import { initPayment } from './init-payment.js';
 
 initialPageCondition();
 initTabs();
@@ -79,5 +80,6 @@ getData().then((data) => {
   const mapElement = document.querySelector('#order-map');
   initMap(mapElement, deliveryPoints, cities, addressContainer);
 });
+initPayment(pickUpBlock);
 
 export { selectedCityAddresses, updateSelectedCityAddresses };
