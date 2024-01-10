@@ -1,5 +1,5 @@
-import {tabs, deliveryBlock, pickUpBlock} from './elements.js';
-import {receivingMethod} from './constants.js';
+import { tabs, deliveryBlock, pickUpBlock } from './elements.js';
+import { receivingMethod } from './constants.js';
 
 const initTabs = () => {
   const onTabClick = (evt) => {
@@ -21,7 +21,14 @@ const initTabs = () => {
       deliveryBlock.classList.add('hidden');
     }
   };
+  const onTabKeydown = (evt) => {
+    if (evt.key !== 'Enter') {
+      return;
+    }
+    evt.target.click();
+  };
   tabs.addEventListener('click', onTabClick);
+  tabs.addEventListener('keydown', onTabKeydown);
 };
 
-export {initTabs};
+export { initTabs };
