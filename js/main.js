@@ -76,21 +76,7 @@ getData().then((data) => {
   const { 'delivery-points': deliveryPoints } = defaultCityAddresses;
   updateSelectedCityAddresses(deliveryPoints);
   fillCityAddresses(deliveryPoints);
-  //map
   const mapElement = document.querySelector('#order-map');
-
-  // const map = L.map('order-map', {
-  //   center: getAddressCoordinates(deliveryPoints[0]),
-  //   zoom: ZOOM
-  // });
-  // L.tileLayer(TILE_LAYER, {attribution: COPYRIGHT}).on('load', () => {
-  //   mapElement.style.backgroundImage = 'none';
-  // }).addTo(map);
-  // const markerGroup = L.layerGroup().addTo(map);
-  // createMarkers(deliveryPoints, markerGroup);
-  // addMainPinMarker(getAddressCoordinates(deliveryPoints[0]), markerGroup);
-  // initButtonCityClickHandler(cities, markerGroup, map);
-  // initAddressClickHandler(addressContainer, markerGroup, map);
   initMap(mapElement, deliveryPoints, cities, addressContainer);
 });
 
