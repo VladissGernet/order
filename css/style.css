@@ -6,6 +6,7 @@
 @import url("./global/reboot.css");
 @import url("./global/typography.css");
 @import url("./global/utils.css");
+@import url("./global/hidden.css");
 
 @import url("./blocks/page-header.css");
 @import url("./blocks/wrapper.css");

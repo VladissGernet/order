@@ -77,14 +77,15 @@
                 <label for="payment-cash">Наличные</label>
               </div>
               <div class="input-wrapper input-wrapper--error input-wrapper--input-group js-input--card-number">
+                <input class="hidden" id="card-full-number" type="number" name="card-number">
                 <h4>Номер карты</h4>
-                <input id="card-fields-1" type="text" required />
+                <input id="card-fields-1" type="text" value="4539" required />
                 <label for="card-fields-1" aria-label="Первые четыре цифр с карты"></label>
-                <input id="card-fields-2" type="text" required />
+                <input id="card-fields-2" type="text" value="1488" required />
                 <label for="card-fields-2" aria-label="Вторые четыре цифр с карты"></label>
-                <input id="card-fields-3" type="text" required />
+                <input id="card-fields-3" type="text" value="0343" required />
                 <label for="card-fields-3" aria-label="Третьи четыре цифр с карты"></label>
-                <input id="card-fields-4" type="text" required />
+                <input id="card-fields-4" type="text" value="646" required />
                 <label for="card-fields-4" aria-label="Четвёртые четыре цифр с карты"></label>
                 <div class="input-wrapper__error">Введите верный номер карты</div>
               </div>

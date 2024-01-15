@@ -1,7 +1,31 @@
+const validateCardNumber = (cardNumber) => {
+  cardNumber = cardNumber.replace(/\s/g, '');
+  if (!/^\d+$/.test(cardNumber)) {
+    return false;
+  }
+  const reversedCardNumber = cardNumber.split('').reverse().join('');
+  let sum = 0;
+  for (let i = 0; i < reversedCardNumber.length; i++) {
+    let digit = parseInt(reversedCardNumber.charAt(i), 10);
+    if (i % 2 === 1) {
+      digit *= 2;
+      if (digit > 9) {
+        digit -= 9;
+      }
+    }
+    sum += digit;
+  }
+  return sum % 10 === 0;
+};
 const maxCardNumberPartLength = 4;
 const initPayment = (block) => {
   const paymentRadioInputs = block.querySelector('.input-wrapper--payment-method');
   const cardNumberField = block.querySelector('.js-input--card-number');
+  const cardFullNumberField = cardNumberField.querySelector('#card-full-number');
+  const cardFieldOne = cardNumberField.querySelector('#card-fields-1');
+  const cardFieldTwo = cardNumberField.querySelector('#card-fields-2');
+  const cardFieldThree = cardNumberField.querySelector('#card-fields-3');
+  const cardFieldFour = cardNumberField.querySelector('#card-fields-4');
   const onPaymentChange = (evt) => {
     switch (evt.target.value) {
       case 'cash':
@@ -24,15 +48,15 @@ const initPayment = (block) => {
       switch (elementId) {
         case 'card-fields-1':
           evt.preventDefault();
-          cardNumberField.querySelector('#card-fields-2').focus();
+          cardFieldTwo.focus();
           break;
         case 'card-fields-2':
           evt.preventDefault();
-          cardNumberField.querySelector('#card-fields-3').focus();
+          cardFieldThree.focus();
           break;
         case 'card-fields-3':
           evt.preventDefault();
-          cardNumberField.querySelector('#card-fields-4').focus();
+          cardFieldFour.focus();
           break;
         case 'card-fields-4':
           if (isNumber === true) {
@@ -48,15 +72,15 @@ const initPayment = (block) => {
       switch (elementId) {
         case 'card-fields-4':
           evt.preventDefault();
-          cardNumberField.querySelector('#card-fields-3').focus();
+          cardFieldThree.focus();
           break;
         case 'card-fields-3':
           evt.preventDefault();
-          cardNumberField.querySelector('#card-fields-2').focus();
+          cardFieldTwo.focus();
           break;
         case 'card-fields-2':
           evt.preventDefault();
-          cardNumberField.querySelector('#card-fields-1').focus();
+          cardFieldOne.focus();
           break;
       }
     };
@@ -79,6 +103,16 @@ const initPayment = (block) => {
     }
     if (isNumber === false && isBackspace === false && isArrowLeft === false && isArrowRight === false) {
       evt.preventDefault();
+    }
+  });
+  cardNumberField.addEventListener('keyup', () => {
+    cardFullNumberField.value = `${cardFieldOne.value}${cardFieldTwo.value}${cardFieldThree.value}${cardFieldFour.value}`;
+    const isLunahAlgorithmCheckDone = validateCardNumber(cardFullNumberField.value);
+    if (isLunahAlgorithmCheckDone) {
+      cardNumberField.classList.remove('input-wrapper--error');
+    }
+    if (isLunahAlgorithmCheckDone === false) {
+      cardNumberField.classList.add('input-wrapper--error');
     }
   });
 };
