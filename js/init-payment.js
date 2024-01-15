@@ -60,12 +60,21 @@ const initPayment = (block) => {
           break;
       }
     };
-    if (isBackspace === true || isArrowLeft === true) {
-      const isFieldEmpty = evt.target.value.length === 0;
-      const selectionPosition = evt.target.selectionStart;
-      const isSelectionAtTheStart = selectionPosition === 0;
+    const isFieldEmpty = evt.target.value.length === 0;
+    const selectionPosition = evt.target.selectionStart;
+    const isSelectionAtTheStart = selectionPosition === 0;
+    if (isArrowLeft === true) {
       if (isFieldEmpty || isSelectionAtTheStart) {
         focusToThePreviousField();
+      }
+    }
+    if (isBackspace === true) {
+      if (isFieldEmpty || isSelectionAtTheStart) {
+        focusToThePreviousField();
+        if (document.activeElement.id !== 'card-fields-1') {
+          const previousFieldValue = document.activeElement.value;
+          document.activeElement.value = previousFieldValue.slice(0, -1);
+        }
       }
     }
     if (isNumber === false && isBackspace === false && isArrowLeft === false && isArrowRight === false) {
