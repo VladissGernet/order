@@ -68,6 +68,9 @@ const initPayment = (block) => {
     if (isNumber && elementLength >= maxCardNumberPartLength) {
       focusToTheNextField();
     }
+    if (isArrowRight && document.activeElement.selectionStart === maxCardNumberPartLength) {
+      focusToTheNextField();
+    }
     const focusToThePreviousField = () => {
       switch (elementId) {
         case 'card-fields-4':
@@ -118,3 +121,4 @@ const initPayment = (block) => {
 };
 
 export { initPayment };
+// остановился на добавлении проверки номера карты перед отправкой
