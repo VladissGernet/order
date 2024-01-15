@@ -20,7 +20,7 @@ const initPayment = (block) => {
     const isBackspace = evt.key === 'Backspace';
     const isArrowLeft = evt.key === 'ArrowLeft';
     const isArrowRight = evt.key === 'ArrowRight';
-    if (isNumber && elementLength >= maxCardNumberPartLength) {
+    const focusToTheNextField = () => {
       switch (elementId) {
         case 'card-fields-1':
           evt.preventDefault();
@@ -40,26 +40,32 @@ const initPayment = (block) => {
           }
           break;
       }
+    };
+    if (isNumber && elementLength >= maxCardNumberPartLength) {
+      focusToTheNextField();
     }
+    const focusToThePreviousField = () => {
+      switch (elementId) {
+        case 'card-fields-4':
+          evt.preventDefault();
+          cardNumberField.querySelector('#card-fields-3').focus();
+          break;
+        case 'card-fields-3':
+          evt.preventDefault();
+          cardNumberField.querySelector('#card-fields-2').focus();
+          break;
+        case 'card-fields-2':
+          evt.preventDefault();
+          cardNumberField.querySelector('#card-fields-1').focus();
+          break;
+      }
+    };
     if (isBackspace === true || isArrowLeft === true) {
       const isFieldEmpty = evt.target.value.length === 0;
       const selectionPosition = evt.target.selectionStart;
       const isSelectionAtTheStart = selectionPosition === 0;
       if (isFieldEmpty || isSelectionAtTheStart) {
-        switch (elementId) {
-          case 'card-fields-4':
-            evt.preventDefault();
-            cardNumberField.querySelector('#card-fields-3').focus();
-            break;
-          case 'card-fields-3':
-            evt.preventDefault();
-            cardNumberField.querySelector('#card-fields-2').focus();
-            break;
-          case 'card-fields-2':
-            evt.preventDefault();
-            cardNumberField.querySelector('#card-fields-1').focus();
-            break;
-        }
+        focusToThePreviousField();
       }
     }
     if (isNumber === false && isBackspace === false && isArrowLeft === false && isArrowRight === false) {
