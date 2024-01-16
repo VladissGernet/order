@@ -2,7 +2,7 @@ import { initTabs } from './init-tabs.js';
 import { initialPageCondition } from './initial-page-condition.js';
 import { addPhoneMask } from './masks.js';
 import { checkPhoneInput } from './check-phone-input.js';
-import { clearInputsWithLabels } from './util.js';
+import { clearInputsWithLabels, validateCardNumberViaLunah } from './util.js';
 import { fillCitiesContainer } from './fill-cities.js';
 import {
   defaultCitySelection,
@@ -53,6 +53,7 @@ const onPhoneFieldInput = () => {
 pickUpPhone.addEventListener('input', onPhoneFieldInput);
 
 //pick-up submit
+// change to 'submit' instead of 'click' <------------------!
 const onSubmitButtonClick = (evt) => {
   evt.preventDefault();
   checkPhoneInput(pickUpPhone);
@@ -81,5 +82,20 @@ getData().then((data) => {
   initMap(mapElement, deliveryPoints, cities, addressContainer);
 });
 initPayment(pickUpBlock);
-
+const cardNumberField = pickUpBlock.querySelector('.js-input--card-number');
+const cardFullNumberField = cardNumberField.querySelector('#card-full-number');
+const cardFieldOne = cardNumberField.querySelector('#card-fields-1');
+const cardFieldTwo = cardNumberField.querySelector('#card-fields-2');
+const cardFieldThree = cardNumberField.querySelector('#card-fields-3');
+const cardFieldFour = cardNumberField.querySelector('#card-fields-4');
+cardNumberField.addEventListener('input', () => {
+  cardFullNumberField.value = `${cardFieldOne.value}${cardFieldTwo.value}${cardFieldThree.value}${cardFieldFour.value}`;
+  const isLunahAlgorithmCheckDone = validateCardNumberViaLunah(cardFullNumberField.value);
+  if (isLunahAlgorithmCheckDone) {
+    cardNumberField.classList.remove('input-wrapper--error');
+  }
+  if (isLunahAlgorithmCheckDone === false) {
+    cardNumberField.classList.add('input-wrapper--error');
+  }
+});
 export { selectedCityAddresses, updateSelectedCityAddresses };
