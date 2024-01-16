@@ -34,6 +34,7 @@ const COPYRIGHT = '&copy; <a href="https://www.openstreetmap.org/copyright">Open
 const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const ZOOM = 11;
 const MAP_SETTING_DURATION = 1.0;
+const MAX_CARD_NUMBER_PART_LENGTH = 4;
 
 export {
   defaultCitySelection,
@@ -44,5 +45,6 @@ export {
   COPYRIGHT,
   TILE_LAYER,
   ZOOM,
-  MAP_SETTING_DURATION
+  MAP_SETTING_DURATION,
+  MAX_CARD_NUMBER_PART_LENGTH
 };

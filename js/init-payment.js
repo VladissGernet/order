@@ -1,23 +1,5 @@
-const validateCardNumber = (cardNumber) => {
-  cardNumber = cardNumber.replace(/\s/g, '');
-  if (!/^\d+$/.test(cardNumber)) {
-    return false;
-  }
-  const reversedCardNumber = cardNumber.split('').reverse().join('');
-  let sum = 0;
-  for (let i = 0; i < reversedCardNumber.length; i++) {
-    let digit = parseInt(reversedCardNumber.charAt(i), 10);
-    if (i % 2 === 1) {
-      digit *= 2;
-      if (digit > 9) {
-        digit -= 9;
-      }
-    }
-    sum += digit;
-  }
-  return sum % 10 === 0;
-};
-const maxCardNumberPartLength = 4;
+import { MAX_CARD_NUMBER_PART_LENGTH } from './constants.js';
+import { validateCardNumberViaLunah } from './util.js';
 const initPayment = (block) => {
   const paymentRadioInputs = block.querySelector('.input-wrapper--payment-method');
   const cardNumberField = block.querySelector('.js-input--card-number');
@@ -65,10 +47,10 @@ const initPayment = (block) => {
           break;
       }
     };
-    if (isNumber && elementLength >= maxCardNumberPartLength) {
+    if (isNumber && elementLength >= MAX_CARD_NUMBER_PART_LENGTH) {
       focusToTheNextField();
     }
-    if (isArrowRight && document.activeElement.selectionStart === maxCardNumberPartLength) {
+    if (isArrowRight && document.activeElement.selectionStart === MAX_CARD_NUMBER_PART_LENGTH) {
       focusToTheNextField();
     }
     const focusToThePreviousField = () => {
@@ -110,7 +92,7 @@ const initPayment = (block) => {
   });
   cardNumberField.addEventListener('keyup', () => {
     cardFullNumberField.value = `${cardFieldOne.value}${cardFieldTwo.value}${cardFieldThree.value}${cardFieldFour.value}`;
-    const isLunahAlgorithmCheckDone = validateCardNumber(cardFullNumberField.value);
+    const isLunahAlgorithmCheckDone = validateCardNumberViaLunah(cardFullNumberField.value);
     if (isLunahAlgorithmCheckDone) {
       cardNumberField.classList.remove('input-wrapper--error');
     }
@@ -121,4 +103,3 @@ const initPayment = (block) => {
 };
 
 export { initPayment };
-// остановился на добавлении проверки номера карты перед отправкой
