@@ -35,6 +35,7 @@ const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const ZOOM = 11;
 const MAP_SETTING_DURATION = 1.0;
 const MAX_CARD_NUMBER_PART_LENGTH = 4;
+const PHONE_FILED_LENGTH = 16;
 
 export {
   defaultCitySelection,
@@ -46,5 +47,6 @@ export {
   TILE_LAYER,
   ZOOM,
   MAP_SETTING_DURATION,
-  MAX_CARD_NUMBER_PART_LENGTH
+  MAX_CARD_NUMBER_PART_LENGTH,
+  PHONE_FILED_LENGTH
 };

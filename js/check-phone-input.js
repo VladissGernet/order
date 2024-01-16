@@ -1,6 +1,8 @@
+import { PHONE_FILED_LENGTH } from './constants.js';
+
 const checkPhoneInput = (inputField) => {
   const inputFieldLength = inputField.value.length;
-  const isPhoneFieldFilledIn = inputField.minLength === inputFieldLength && inputField.maxLength === inputFieldLength;
+  const isPhoneFieldFilledIn = inputFieldLength === PHONE_FILED_LENGTH;
   if (isPhoneFieldFilledIn) {
     inputField.closest('.input-wrapper').classList.remove('input-wrapper--error');
     return;
@@ -8,4 +10,4 @@ const checkPhoneInput = (inputField) => {
   inputField.closest('.input-wrapper').classList.add('input-wrapper--error');
 };
 
-export {checkPhoneInput};
+export { checkPhoneInput };

@@ -1,9 +1,7 @@
 import { MAX_CARD_NUMBER_PART_LENGTH } from './constants.js';
-import { validateCardNumberViaLunah } from './util.js';
 const initPayment = (block) => {
   const paymentRadioInputs = block.querySelector('.input-wrapper--payment-method');
   const cardNumberField = block.querySelector('.js-input--card-number');
-  // const cardFullNumberField = cardNumberField.querySelector('#card-full-number');
   const cardFieldOne = cardNumberField.querySelector('#card-fields-1');
   const cardFieldTwo = cardNumberField.querySelector('#card-fields-2');
   const cardFieldThree = cardNumberField.querySelector('#card-fields-3');
@@ -90,16 +88,6 @@ const initPayment = (block) => {
       evt.preventDefault();
     }
   });
-  // cardNumberField.addEventListener('keyup', () => {
-  //   cardFullNumberField.value = `${cardFieldOne.value}${cardFieldTwo.value}${cardFieldThree.value}${cardFieldFour.value}`;
-  //   const isLunahAlgorithmCheckDone = validateCardNumberViaLunah(cardFullNumberField.value);
-  //   if (isLunahAlgorithmCheckDone) {
-  //     cardNumberField.classList.remove('input-wrapper--error');
-  //   }
-  //   if (isLunahAlgorithmCheckDone === false) {
-  //     cardNumberField.classList.add('input-wrapper--error');
-  //   }
-  // });
 };
 
 export { initPayment };

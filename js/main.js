@@ -13,9 +13,9 @@ import {
   pickUpSubmitHelp,
   pickUpSubmitContainer,
   pickUpPhone,
-  pickUpSubmit,
   citiesContainer,
-  addressContainer
+  addressContainer,
+  pickUpForm
 } from './elements.js';
 import { getData } from './load-data.js';
 import { initMap } from './map.js';
@@ -24,42 +24,6 @@ import { initPayment } from './init-payment.js';
 initialPageCondition();
 initTabs();
 addPhoneMask();
-
-//submit button conditions for unblocking
-const updateSubmitHelp = (blockContainer) => {
-  const fieldsWithError = blockContainer.querySelectorAll('.input-wrapper--error');
-  const isThereNoErrors = fieldsWithError.length === 0;
-  pickUpSubmitHelp.innerHTML = '';
-  if (isThereNoErrors) {
-    pickUpSubmitContainer.style.display = 'none';
-    return;
-  }
-  pickUpSubmitContainer.style.display = 'block';
-  fieldsWithError.forEach((errorField, index) => {
-    const newSpan = document.createElement('span');
-    newSpan.textContent = errorField.querySelector('h4').textContent.toLowerCase();
-    if (index > 0) {
-      pickUpSubmitHelp.innerHTML += ' и ';
-    }
-    pickUpSubmitHelp.appendChild(newSpan);
-  });
-};
-
-//pick-up phone oninput
-const onPhoneFieldInput = () => {
-  checkPhoneInput(pickUpPhone);
-  updateSubmitHelp(pickUpBlock);
-};
-pickUpPhone.addEventListener('input', onPhoneFieldInput);
-
-//pick-up submit
-// change to 'submit' instead of 'click' <------------------!
-const onSubmitButtonClick = (evt) => {
-  evt.preventDefault();
-  checkPhoneInput(pickUpPhone);
-  updateSubmitHelp(pickUpBlock);
-};
-pickUpSubmit.addEventListener('click', onSubmitButtonClick);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //clear initial city and points containers
@@ -82,14 +46,13 @@ getData().then((data) => {
   initMap(mapElement, deliveryPoints, cities, addressContainer);
 });
 initPayment(pickUpBlock);
-const cardNumberField = pickUpBlock.querySelector('.js-input--card-number');
-const cardFullNumberField = cardNumberField.querySelector('#card-full-number');
-const cardFieldOne = cardNumberField.querySelector('#card-fields-1');
-const cardFieldTwo = cardNumberField.querySelector('#card-fields-2');
-const cardFieldThree = cardNumberField.querySelector('#card-fields-3');
-const cardFieldFour = cardNumberField.querySelector('#card-fields-4');
-cardNumberField.addEventListener('input', () => {
-  cardFullNumberField.value = `${cardFieldOne.value}${cardFieldTwo.value}${cardFieldThree.value}${cardFieldFour.value}`;
+
+//payment validation
+const checkCardInputFields = () => {
+  const cardNumberField = pickUpBlock.querySelector('.js-input--card-number');
+  const cardFullNumberField = cardNumberField.querySelector('#card-full-number');
+  const cardInputFields = cardNumberField.querySelectorAll('[id^="card-fields-"]');
+  cardFullNumberField.value = `${cardInputFields[0].value}${cardInputFields[1].value}${cardInputFields[2].value}${cardInputFields[3].value}`;
   const isLunahAlgorithmCheckDone = validateCardNumberViaLunah(cardFullNumberField.value);
   if (isLunahAlgorithmCheckDone) {
     cardNumberField.classList.remove('input-wrapper--error');
@@ -97,5 +60,33 @@ cardNumberField.addEventListener('input', () => {
   if (isLunahAlgorithmCheckDone === false) {
     cardNumberField.classList.add('input-wrapper--error');
   }
-});
+};
+
+const updateSubmitHelp = (blockContainer) => {
+  const fieldsWithError = blockContainer.querySelectorAll('.input-wrapper--error');
+  const isThereNoErrors = fieldsWithError.length === 0;
+  pickUpSubmitHelp.innerHTML = '';
+  if (isThereNoErrors) {
+    pickUpSubmitContainer.style.display = 'none';
+    return;
+  }
+  pickUpSubmitContainer.style.display = 'block';
+  fieldsWithError.forEach((errorField, index) => {
+    const newSpan = document.createElement('span');
+    newSpan.textContent = errorField.querySelector('h4').textContent.toLowerCase();
+    if (index > 0) {
+      pickUpSubmitHelp.innerHTML += ' и ';
+    }
+    pickUpSubmitHelp.appendChild(newSpan);
+  });
+};
+
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
+  checkPhoneInput(pickUpPhone);
+  checkCardInputFields();
+  updateSubmitHelp(pickUpBlock);
+};
+pickUpForm.addEventListener('submit', onFormSubmit);
+
 export { selectedCityAddresses, updateSelectedCityAddresses };
