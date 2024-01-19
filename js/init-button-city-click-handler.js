@@ -1,13 +1,13 @@
-import {addMainPinMarker, clearInputsWithLabels, getAddressCoordinates} from './util.js';
-import {addressContainer, citiesContainer} from './elements.js';
-import {fillCityAddresses} from './fill-city-addresses.js';
-import {createMarkers} from './create-markers.js';
-import {updateMapView} from './util.js';
-import {updateSelectedCityAddresses} from './main.js';
+import { addMainPinMarker, clearInputsWithLabels, getAddressCoordinates } from './util.js';
+import { addressContainer, pickUpCitiesContainer } from './elements.js';
+import { fillCityAddresses } from './fill-city-addresses.js';
+import { createMarkers } from './create-markers.js';
+import { updateMapView } from './util.js';
+import { updateSelectedCityAddresses } from './main.js';
 
 const initButtonCityClickHandler = (citiesData, initialLayer, map) => {
   let previousButtonValue = '';
-  const onCityClick = (evt)=> {
+  const onCityClick = (evt) => {
     const cityButton = evt.target.closest('[name="city"]');
     if (cityButton === null) {
       return;
@@ -23,11 +23,11 @@ const initButtonCityClickHandler = (citiesData, initialLayer, map) => {
     const selectedCityPoints = selectedCity['delivery-points'];
     initialLayer.clearLayers();
     createMarkers(selectedCityPoints, initialLayer);
-    addMainPinMarker(getAddressCoordinates(selectedCityPoints[0]) ,initialLayer);
+    addMainPinMarker(getAddressCoordinates(selectedCityPoints[0]), initialLayer);
     updateMapView(map, selectedCityPoints[0].coordinates);
     updateSelectedCityAddresses(selectedCityPoints);
   };
-  citiesContainer.addEventListener('click', onCityClick);
+  pickUpCitiesContainer.addEventListener('click', onCityClick);
 };
 
-export {initButtonCityClickHandler};
+export { initButtonCityClickHandler };

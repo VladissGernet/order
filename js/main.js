@@ -13,7 +13,7 @@ import {
   pickUpSubmitHelp,
   pickUpSubmitContainer,
   pickUpPhone,
-  citiesContainer,
+  pickUpCitiesContainer,
   addressContainer,
   pickUpForm,
   pickUpSubmitButton
@@ -28,7 +28,7 @@ addPhoneMask();
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //clear initial city and points containers
-clearInputsWithLabels(citiesContainer);
+clearInputsWithLabels(pickUpCitiesContainer);
 clearInputsWithLabels(addressContainer);
 //when cities data are received
 let selectedCityAddresses = [];
