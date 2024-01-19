@@ -1,6 +1,6 @@
-import {createMarkers} from './create-markers.js';
-import {selectedCityAddresses} from './main.js';
-import {addMainPinMarker, getAddressCoordinates, updateMapView} from './util.js';
+import { createMarkers } from './create-markers.js';
+import { selectedCityAddresses } from './init-cities-points.js';
+import { addMainPinMarker, getAddressCoordinates, updateMapView } from './util.js';
 
 const initAddressClickHandler = (container, initialLayer, map) => {
   let previousButtonValue = '';
@@ -22,4 +22,4 @@ const initAddressClickHandler = (container, initialLayer, map) => {
   });
 };
 
-export {initAddressClickHandler};
+export { initAddressClickHandler };

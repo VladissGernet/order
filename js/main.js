@@ -2,50 +2,22 @@ import { initTabs } from './init-tabs.js';
 import { initialPageCondition } from './initial-page-condition.js';
 import { addPhoneMask } from './masks.js';
 import { checkPhoneInput } from './check-phone-input.js';
-import { clearInputsWithLabels, validateCardNumberViaLunah } from './util.js';
-import { fillCitiesContainer } from './fill-cities.js';
-import {
-  defaultCitySelection,
-} from './constants.js';
-import { fillCityAddresses } from './fill-city-addresses.js';
+import { validateCardNumberViaLunah } from './util.js';
 import {
   pickUpBlock,
   pickUpSubmitHelp,
   pickUpSubmitContainer,
   pickUpPhone,
-  pickUpCitiesContainer,
-  addressContainer,
   pickUpForm,
   pickUpSubmitButton
 } from './elements.js';
-import { getData } from './load-data.js';
-import { initMap } from './map.js';
 import { initPayment } from './init-payment.js';
+import { initCitiesPoints } from './init-cities-points.js';
 
 initialPageCondition();
 initTabs();
 addPhoneMask();
-
-///////////////////////////////////////////////////////////////////////////////////////
-//clear initial city and points containers
-clearInputsWithLabels(pickUpCitiesContainer);
-clearInputsWithLabels(addressContainer);
-//when cities data are received
-let selectedCityAddresses = [];
-const updateSelectedCityAddresses = (newAddresses) => {
-  selectedCityAddresses = [];
-  Object.assign(selectedCityAddresses, newAddresses);
-};
-getData().then((data) => {
-  const { cities } = data;
-  fillCitiesContainer(cities);
-  const defaultCityAddresses = cities.find((cityElement) => cityElement.city === defaultCitySelection);
-  const { 'delivery-points': deliveryPoints } = defaultCityAddresses;
-  updateSelectedCityAddresses(deliveryPoints);
-  fillCityAddresses(deliveryPoints);
-  const mapElement = document.querySelector('#order-map');
-  initMap(mapElement, deliveryPoints, cities, addressContainer);
-});
+initCitiesPoints();
 initPayment(pickUpBlock);
 
 //payment validation
@@ -108,6 +80,3 @@ const onFormSubmit = (evt) => {
   updateSubmitHelp(pickUpBlock);
 };
 pickUpForm.addEventListener('submit', onFormSubmit);
-// остановился на валидации полей телефона и карты.
-// добавлять ошибку и лисенер, чтобы он блокировал повторное нажатие кнопки и удался после успешной валидации
-export { selectedCityAddresses, updateSelectedCityAddresses };
