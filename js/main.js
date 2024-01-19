@@ -15,7 +15,8 @@ import {
   pickUpPhone,
   citiesContainer,
   addressContainer,
-  pickUpForm
+  pickUpForm,
+  pickUpSubmitButton
 } from './elements.js';
 import { getData } from './load-data.js';
 import { initMap } from './map.js';
@@ -56,10 +57,10 @@ const checkCardInputFields = () => {
   const isLunahAlgorithmCheckDone = validateCardNumberViaLunah(cardFullNumberField.value);
   if (isLunahAlgorithmCheckDone) {
     cardNumberField.classList.remove('input-wrapper--error');
+    return true;
   }
-  if (isLunahAlgorithmCheckDone === false) {
-    cardNumberField.classList.add('input-wrapper--error');
-  }
+  cardNumberField.classList.add('input-wrapper--error');
+  return false;
 };
 
 const updateSubmitHelp = (blockContainer) => {
@@ -83,10 +84,30 @@ const updateSubmitHelp = (blockContainer) => {
 
 const onFormSubmit = (evt) => {
   evt.preventDefault();
-  checkPhoneInput(pickUpPhone);
-  checkCardInputFields();
+  const isErrorOnForm = [checkPhoneInput(pickUpPhone), checkCardInputFields()].includes(false);
+  let checkAndUpdate = {};
+  checkAndUpdate = () => {
+    const isNoErrors = [checkPhoneInput(pickUpPhone), checkCardInputFields()].includes(false) === false;
+    if (isNoErrors) {
+      const allInputs = pickUpForm.querySelectorAll('.js-input-validation');
+      allInputs.forEach((element) => {
+        element.removeEventListener('input', checkAndUpdate);
+      });
+      pickUpSubmitButton.disabled = false;
+    }
+    updateSubmitHelp(pickUpBlock);
+  };
+  if (isErrorOnForm === true) {
+    pickUpSubmitButton.disabled = true;
+    const containersToCheck = pickUpForm.querySelectorAll('.js-input-validation');
+    containersToCheck.forEach((element) => {
+      element.addEventListener('input', checkAndUpdate);
+    });
+    return;
+  }
   updateSubmitHelp(pickUpBlock);
 };
 pickUpForm.addEventListener('submit', onFormSubmit);
-
+// остановился на валидации полей телефона и карты.
+// добавлять ошибку и лисенер, чтобы он блокировал повторное нажатие кнопки и удался после успешной валидации
 export { selectedCityAddresses, updateSelectedCityAddresses };

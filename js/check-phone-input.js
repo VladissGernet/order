@@ -5,9 +5,10 @@ const checkPhoneInput = (inputField) => {
   const isPhoneFieldFilledIn = inputFieldLength === PHONE_FILED_LENGTH;
   if (isPhoneFieldFilledIn) {
     inputField.closest('.input-wrapper').classList.remove('input-wrapper--error');
-    return;
+    return true;
   }
   inputField.closest('.input-wrapper').classList.add('input-wrapper--error');
+  return false;
 };
 
 export { checkPhoneInput };
