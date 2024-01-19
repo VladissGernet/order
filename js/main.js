@@ -75,8 +75,7 @@ const onFormSubmit = (evt) => {
     containersToCheck.forEach((element) => {
       element.addEventListener('input', checkAndUpdate);
     });
-    return;
+    updateSubmitHelp(pickUpBlock);
   }
-  updateSubmitHelp(pickUpBlock);
 };
 pickUpForm.addEventListener('submit', onFormSubmit);
