@@ -12,6 +12,3 @@ addPhoneMask();
 initCitiesPoints();
 initFormValidation();
 initPayment(pickUpBlock);
-
-//payment validation
-

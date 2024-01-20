@@ -2,6 +2,10 @@ const receivingMethod = {
   delivery: 'delivery',
   pickUp: 'pickup',
 };
+const paymentMethod = {
+  cash: 'cash',
+  card: 'card'
+};
 const defaultCitySelection = 'Санкт-Петербург';
 const defaultAddressSelection = 1;
 const iconConfig = {
@@ -48,5 +52,6 @@ export {
   ZOOM,
   MAP_SETTING_DURATION,
   MAX_CARD_NUMBER_PART_LENGTH,
-  PHONE_FILED_LENGTH
+  PHONE_FILED_LENGTH,
+  paymentMethod
 };

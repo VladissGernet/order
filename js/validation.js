@@ -1,4 +1,4 @@
-import { PHONE_FILED_LENGTH } from './constants.js';
+import { PHONE_FILED_LENGTH, paymentMethod } from './constants.js';
 import { validateCardNumberViaLunah } from './util.js';
 import {
   pickUpBlock,
@@ -8,6 +8,7 @@ import {
   pickUpForm,
   pickUpSubmitButton
 } from './elements.js';
+import { sendData } from './load-data.js';
 
 const checkPhoneInput = (inputField) => {
   const inputFieldLength = inputField.value.length;
@@ -52,6 +53,7 @@ const updateSubmitHelp = (blockContainer) => {
 };
 const onFormSubmit = (evt) => {
   evt.preventDefault();
+  const selectedPaymentMethod = evt.target.querySelector('.input-wrapper--payment-method').querySelector(':checked').value;
   const isErrorOnForm = [checkPhoneInput(pickUpPhone), checkCardInputFields(pickUpForm)].includes(false);
   let checkAndUpdate = {};
   checkAndUpdate = () => {
@@ -72,7 +74,13 @@ const onFormSubmit = (evt) => {
       element.addEventListener('input', checkAndUpdate);
     });
     updateSubmitHelp(pickUpBlock);
+    return;
   }
+  const formData = new FormData(evt.target);
+  if (selectedPaymentMethod === paymentMethod.cash) {
+    formData.delete('card-number');
+  }
+  sendData(formData);
 };
 
 const initFormValidation = () => {
