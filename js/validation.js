@@ -52,7 +52,9 @@ const updateSubmitHelp = (blockContainer) => {
     pickUpSubmitHelp.appendChild(newSpan);
   });
 };
+
 const validateForm = (form, ...validationFunctions) => {
+  const paymentMethodBlock = form.querySelector('.js-radio--payment-method');
   const initialValidationResult = validationFunctions.map((validate) => validate(form));
   const isErrorOnForm = initialValidationResult.includes(false);
   const checkAndUpdate = () => {
@@ -67,6 +69,18 @@ const validateForm = (form, ...validationFunctions) => {
     }
     updateSubmitHelp(pickUpBlock);
   };
+  let onPaymentMethodChangeResetValidation = {};
+  paymentMethodBlock.removeEventListener('change', onPaymentMethodChangeResetValidation);
+  onPaymentMethodChangeResetValidation = () => {
+    const allInputs = pickUpForm.querySelectorAll('.js-input--validation');
+    allInputs.forEach((element) => {
+      element.removeEventListener('input', checkAndUpdate);
+      element.classList.remove('input-wrapper--error');
+    });
+    pickUpSubmitButton.disabled = false;
+    updateSubmitHelp(pickUpBlock);
+  };
+  paymentMethodBlock.addEventListener('change', onPaymentMethodChangeResetValidation);
   if (isErrorOnForm === true) {
     pickUpSubmitButton.disabled = true;
     const containersToCheck = pickUpForm.querySelectorAll('.js-input--validation');
@@ -88,7 +102,11 @@ const onFormSubmit = (evt) => {
     validateForm(pickUpForm, checkPhoneInput);
     formData.delete('card-number');
   }
-  sendData(formData);
+  //добавить к validateForm return false и если да, то не отправлять форму!
+  // sendData(formData);
+  for (const [key, value] of formData) {
+    console.log(`${key} - ${value}`);
+  }
 };
 const initFormValidation = () => {
   pickUpForm.addEventListener('submit', onFormSubmit);
