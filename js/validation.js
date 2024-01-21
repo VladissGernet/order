@@ -91,6 +91,19 @@ const validateForm = (form, ...validationFunctions) => {
   }
   return true;
 };
+const SubmitButtonText = {
+  IDLE: 'Заказать',
+  SENDING: 'Отправка...'
+};
+const blockSubmitButton = () => {
+  pickUpSubmitButton.disabled = true;
+  pickUpSubmitButton.textContent = SubmitButtonText.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  pickUpSubmitButton.disabled = false;
+  pickUpSubmitButton.textContent = SubmitButtonText.IDLE;
+};
 const onFormSubmit = (evt) => {
   evt.preventDefault();
   const paymentMethodBlock = pickUpForm.querySelector('.js-radio--payment-method');
@@ -105,7 +118,8 @@ const onFormSubmit = (evt) => {
     formData.delete('card-number');
   }
   if (validationResult) {
-    sendData(formData);
+    blockSubmitButton();
+    sendData(formData).finally(unblockSubmitButton);
   }
 };
 const initFormValidation = () => {
@@ -113,3 +127,4 @@ const initFormValidation = () => {
 };
 
 export { initFormValidation };
+// добавить блокирующий статус отправки на кнопку
