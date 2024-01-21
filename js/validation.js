@@ -1,4 +1,4 @@
-import { PHONE_FILED_LENGTH, paymentMethod } from './constants.js';
+import { PHONE_FILED_LENGTH, paymentMethod, SubmitButtonText } from './constants.js';
 import { validateCardNumberViaLunah } from './util.js';
 import {
   pickUpBlock,
@@ -91,15 +91,10 @@ const validateForm = (form, ...validationFunctions) => {
   }
   return true;
 };
-const SubmitButtonText = {
-  IDLE: 'Заказать',
-  SENDING: 'Отправка...'
-};
 const blockSubmitButton = () => {
   pickUpSubmitButton.disabled = true;
   pickUpSubmitButton.textContent = SubmitButtonText.SENDING;
 };
-
 const unblockSubmitButton = () => {
   pickUpSubmitButton.disabled = false;
   pickUpSubmitButton.textContent = SubmitButtonText.IDLE;
@@ -127,4 +122,3 @@ const initFormValidation = () => {
 };
 
 export { initFormValidation };
-// добавить блокирующий статус отправки на кнопку

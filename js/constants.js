@@ -34,6 +34,10 @@ const icon = L.icon({
   iconSize: [iconConfig.default.width, iconConfig.default.height],
   iconAnchor: [iconConfig.default.anchorX, iconConfig.default.anchorY],
 });
+const SubmitButtonText = {
+  IDLE: 'Заказать',
+  SENDING: 'Отправка...'
+};
 const COPYRIGHT = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 const TILE_LAYER = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 const ZOOM = 11;
@@ -53,5 +57,6 @@ export {
   MAP_SETTING_DURATION,
   MAX_CARD_NUMBER_PART_LENGTH,
   PHONE_FILED_LENGTH,
-  paymentMethod
+  paymentMethod,
+  SubmitButtonText
 };
