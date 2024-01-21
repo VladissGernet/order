@@ -52,7 +52,6 @@ const updateSubmitHelp = (blockContainer) => {
     pickUpSubmitHelp.appendChild(newSpan);
   });
 };
-
 const validateForm = (form, ...validationFunctions) => {
   const paymentMethodBlock = form.querySelector('.js-radio--payment-method');
   const initialValidationResult = validationFunctions.map((validate) => validate(form));
@@ -60,6 +59,7 @@ const validateForm = (form, ...validationFunctions) => {
   const checkAndUpdate = () => {
     const validationResult = validationFunctions.map((validate) => validate(form));
     const isNoErrors = validationResult.includes(false) === false;
+    updateSubmitHelp(pickUpBlock);
     if (isNoErrors) {
       const allInputs = pickUpForm.querySelectorAll('.js-input--validation');
       allInputs.forEach((element) => {
@@ -67,7 +67,6 @@ const validateForm = (form, ...validationFunctions) => {
       });
       pickUpSubmitButton.disabled = false;
     }
-    updateSubmitHelp(pickUpBlock);
   };
   let onPaymentMethodChangeResetValidation = {};
   paymentMethodBlock.removeEventListener('change', onPaymentMethodChangeResetValidation);
@@ -88,24 +87,25 @@ const validateForm = (form, ...validationFunctions) => {
       element.addEventListener('input', checkAndUpdate);
     });
     updateSubmitHelp(pickUpBlock);
+    return false;
   }
+  return true;
 };
 const onFormSubmit = (evt) => {
   evt.preventDefault();
   const paymentMethodBlock = pickUpForm.querySelector('.js-radio--payment-method');
   const selectedPaymentMethod = paymentMethodBlock.querySelector(':checked').value;
   const formData = new FormData(evt.target);
+  let validationResult = false;
   if (selectedPaymentMethod === paymentMethod.card) {
-    validateForm(pickUpForm, checkCardInputFields, checkPhoneInput);
+    validationResult = validateForm(pickUpForm, checkCardInputFields, checkPhoneInput);
   }
   if (selectedPaymentMethod === paymentMethod.cash) {
-    validateForm(pickUpForm, checkPhoneInput);
+    validationResult = validateForm(pickUpForm, checkPhoneInput);
     formData.delete('card-number');
   }
-  //добавить к validateForm return false и если да, то не отправлять форму!
-  // sendData(formData);
-  for (const [key, value] of formData) {
-    console.log(`${key} - ${value}`);
+  if (validationResult) {
+    sendData(formData);
   }
 };
 const initFormValidation = () => {
