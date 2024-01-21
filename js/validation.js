@@ -4,20 +4,21 @@ import {
   pickUpBlock,
   pickUpSubmitHelp,
   pickUpSubmitContainer,
-  pickUpPhone,
   pickUpForm,
   pickUpSubmitButton
 } from './elements.js';
 import { sendData } from './load-data.js';
 
-const checkPhoneInput = (inputField) => {
-  const inputFieldLength = inputField.value.length;
+const checkPhoneInput = (form) => {
+  const phoneContainer = form.querySelector('.js-input--phone');
+  const phoneField = phoneContainer.querySelector('[name="phone"]');
+  const inputFieldLength = phoneField.value.length;
   const isPhoneFieldFilledIn = inputFieldLength === PHONE_FILED_LENGTH;
   if (isPhoneFieldFilledIn) {
-    inputField.closest('.input-wrapper').classList.remove('input-wrapper--error');
+    phoneField.closest('.input-wrapper').classList.remove('input-wrapper--error');
     return true;
   }
-  inputField.closest('.input-wrapper').classList.add('input-wrapper--error');
+  phoneField.closest('.input-wrapper').classList.add('input-wrapper--error');
   return false;
 };
 const checkCardInputFields = (form) => {
@@ -53,31 +54,37 @@ const updateSubmitHelp = (blockContainer) => {
 };
 const onFormSubmit = (evt) => {
   evt.preventDefault();
-  const selectedPaymentMethod = evt.target.querySelector('.input-wrapper--payment-method').querySelector(':checked').value;
-  const isErrorOnForm = [checkPhoneInput(pickUpPhone), checkCardInputFields(pickUpForm)].includes(false);
-  let checkAndUpdate = {};
-  checkAndUpdate = () => {
-    const isNoErrors = [checkPhoneInput(pickUpPhone), checkCardInputFields(pickUpForm)].includes(false) === false;
-    if (isNoErrors) {
-      const allInputs = pickUpForm.querySelectorAll('.js-input-validation');
-      allInputs.forEach((element) => {
-        element.removeEventListener('input', checkAndUpdate);
+  const validateForm = (form, ...validationFunctions) => {
+    const initialValidationResult = validationFunctions.map((validate) => validate(form));
+    const isErrorOnForm = initialValidationResult.includes(false);
+    const checkAndUpdate = () => {
+      const validationResult = validationFunctions.map((validate) => validate(form));
+      const isNoErrors = validationResult.includes(false) === false;
+      if (isNoErrors) {
+        const allInputs = pickUpForm.querySelectorAll('.js-input--validation');
+        allInputs.forEach((element) => {
+          element.removeEventListener('input', checkAndUpdate);
+        });
+        pickUpSubmitButton.disabled = false;
+      }
+      updateSubmitHelp(pickUpBlock);
+    };
+    if (isErrorOnForm === true) {
+      pickUpSubmitButton.disabled = true;
+      const containersToCheck = pickUpForm.querySelectorAll('.js-input--validation');
+      containersToCheck.forEach((element) => {
+        element.addEventListener('input', checkAndUpdate);
       });
-      pickUpSubmitButton.disabled = false;
+      updateSubmitHelp(pickUpBlock);
     }
-    updateSubmitHelp(pickUpBlock);
   };
-  if (isErrorOnForm === true) {
-    pickUpSubmitButton.disabled = true;
-    const containersToCheck = pickUpForm.querySelectorAll('.js-input-validation');
-    containersToCheck.forEach((element) => {
-      element.addEventListener('input', checkAndUpdate);
-    });
-    updateSubmitHelp(pickUpBlock);
-    return;
-  }
+  const selectedPaymentMethod = evt.target.querySelector('.input-wrapper--payment-method').querySelector(':checked').value;
   const formData = new FormData(evt.target);
+  if (selectedPaymentMethod === paymentMethod.card) {
+    validateForm(pickUpForm, checkCardInputFields, checkPhoneInput);
+  }
   if (selectedPaymentMethod === paymentMethod.cash) {
+    validateForm(pickUpForm, checkPhoneInput);
     formData.delete('card-number');
   }
   sendData(formData);
@@ -88,4 +95,6 @@ const initFormValidation = () => {
 };
 
 export { initFormValidation };
+
+// остановился на проблеме валидации формы в зависимости от выбора сособа оплаты
 
