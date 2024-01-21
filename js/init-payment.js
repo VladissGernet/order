@@ -1,6 +1,6 @@
 import { MAX_CARD_NUMBER_PART_LENGTH } from './constants.js';
 const initPayment = (block) => {
-  const paymentRadioInputs = block.querySelector('.input-wrapper--payment-method');
+  const paymentRadioInputs = block.querySelector('.js-radio--payment-method');
   const cardNumberField = block.querySelector('.js-input--card-number');
   const cardFieldOne = cardNumberField.querySelector('#card-fields-1');
   const cardFieldTwo = cardNumberField.querySelector('#card-fields-2');

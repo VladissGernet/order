@@ -52,33 +52,34 @@ const updateSubmitHelp = (blockContainer) => {
     pickUpSubmitHelp.appendChild(newSpan);
   });
 };
+const validateForm = (form, ...validationFunctions) => {
+  const initialValidationResult = validationFunctions.map((validate) => validate(form));
+  const isErrorOnForm = initialValidationResult.includes(false);
+  const checkAndUpdate = () => {
+    const validationResult = validationFunctions.map((validate) => validate(form));
+    const isNoErrors = validationResult.includes(false) === false;
+    if (isNoErrors) {
+      const allInputs = pickUpForm.querySelectorAll('.js-input--validation');
+      allInputs.forEach((element) => {
+        element.removeEventListener('input', checkAndUpdate);
+      });
+      pickUpSubmitButton.disabled = false;
+    }
+    updateSubmitHelp(pickUpBlock);
+  };
+  if (isErrorOnForm === true) {
+    pickUpSubmitButton.disabled = true;
+    const containersToCheck = pickUpForm.querySelectorAll('.js-input--validation');
+    containersToCheck.forEach((element) => {
+      element.addEventListener('input', checkAndUpdate);
+    });
+    updateSubmitHelp(pickUpBlock);
+  }
+};
 const onFormSubmit = (evt) => {
   evt.preventDefault();
-  const validateForm = (form, ...validationFunctions) => {
-    const initialValidationResult = validationFunctions.map((validate) => validate(form));
-    const isErrorOnForm = initialValidationResult.includes(false);
-    const checkAndUpdate = () => {
-      const validationResult = validationFunctions.map((validate) => validate(form));
-      const isNoErrors = validationResult.includes(false) === false;
-      if (isNoErrors) {
-        const allInputs = pickUpForm.querySelectorAll('.js-input--validation');
-        allInputs.forEach((element) => {
-          element.removeEventListener('input', checkAndUpdate);
-        });
-        pickUpSubmitButton.disabled = false;
-      }
-      updateSubmitHelp(pickUpBlock);
-    };
-    if (isErrorOnForm === true) {
-      pickUpSubmitButton.disabled = true;
-      const containersToCheck = pickUpForm.querySelectorAll('.js-input--validation');
-      containersToCheck.forEach((element) => {
-        element.addEventListener('input', checkAndUpdate);
-      });
-      updateSubmitHelp(pickUpBlock);
-    }
-  };
-  const selectedPaymentMethod = evt.target.querySelector('.input-wrapper--payment-method').querySelector(':checked').value;
+  const paymentMethodBlock = pickUpForm.querySelector('.js-radio--payment-method');
+  const selectedPaymentMethod = paymentMethodBlock.querySelector(':checked').value;
   const formData = new FormData(evt.target);
   if (selectedPaymentMethod === paymentMethod.card) {
     validateForm(pickUpForm, checkCardInputFields, checkPhoneInput);
@@ -89,12 +90,8 @@ const onFormSubmit = (evt) => {
   }
   sendData(formData);
 };
-
 const initFormValidation = () => {
   pickUpForm.addEventListener('submit', onFormSubmit);
 };
 
 export { initFormValidation };
-
-// остановился на проблеме валидации формы в зависимости от выбора сособа оплаты
-
