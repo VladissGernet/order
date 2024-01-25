@@ -1,5 +1,5 @@
 import { addMainPinMarker, clearInputsWithLabels, getAddressCoordinates } from './util.js';
-import { addressContainer, pickUpCitiesContainer } from './elements.js';
+import { pickUpAddressContainer, pickUpCitiesContainer } from './elements.js';
 import { fillCityAddresses } from './fill-city-addresses.js';
 import { createMarkers } from './create-markers.js';
 import { updateMapView } from './util.js';
@@ -16,7 +16,7 @@ const initButtonCityClickHandler = (citiesData, initialLayer, map) => {
       return;
     }
     previousButtonValue = cityButton.value;
-    clearInputsWithLabels(addressContainer);
+    clearInputsWithLabels(pickUpAddressContainer);
     const selectedCityButtonId = cityButton.value;
     const selectedCity = Object.values(citiesData).find((city) => city['city-id'] === selectedCityButtonId);
     fillCityAddresses(selectedCity['delivery-points']);

@@ -1,5 +1,5 @@
-import {icon} from './constants.js';
-import {addressContainer} from './elements.js';
+import { icon } from './constants.js';
+import { pickUpAddressContainer } from './elements.js';
 
 const createMarkers = (points, layer) => {
   for (const point of points) {
@@ -15,10 +15,10 @@ const createMarkers = (points, layer) => {
         title: point.address,
       });
     marker.on('click', () => {
-      addressContainer.querySelector(`input[value="${point.address}"]`).click();
+      pickUpAddressContainer.querySelector(`input[value="${point.address}"]`).click();
     });
     marker.addTo(layer);
   }
 };
 
-export {createMarkers};
+export { createMarkers };

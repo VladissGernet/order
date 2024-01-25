@@ -9,7 +9,7 @@ const pickUpSubmitContainer = pickUpBlock.querySelector('.form__submit-state');
 const pickUpSubmitHelp = pickUpSubmitContainer.querySelector('.form__submit-help');
 const pickUpSubmitButton = pickUpForm.querySelector('.form__submit-btn');
 const pickUpCitiesContainer = pickUpForm.querySelector('[data-radio-group="city"]');
-const addressContainer = pickUpForm.querySelector('[data-radio-group="address"]');
+const pickUpAddressContainer = pickUpForm.querySelector('[data-radio-group="address"]');
 
 export {
   tabs,
@@ -19,7 +19,7 @@ export {
   pickUpSubmitHelp,
   pickUpSubmitContainer,
   pickUpCitiesContainer,
-  addressContainer,
+  pickUpAddressContainer,
   pickUpForm,
   pickUpSubmitButton
 };
