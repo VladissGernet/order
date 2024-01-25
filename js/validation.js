@@ -117,8 +117,8 @@ const onFormSubmit = (evt) => {
     sendData(formData).finally(unblockSubmitButton);
   }
 };
-const initFormValidation = () => {
+const initPickUpFormValidation = () => {
   pickUpForm.addEventListener('submit', onFormSubmit);
 };
 
-export { initFormValidation };
+export { initPickUpFormValidation };
