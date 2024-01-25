@@ -11,7 +11,7 @@ const updateSelectedCityAddresses = (newAddresses) => {
   selectedCityAddresses = [];
   Object.assign(selectedCityAddresses, newAddresses);
 };
-const initCitiesPoints = () => {
+const initMapCitiesPoints = () => {
   clearInputsWithLabels(pickUpCitiesContainer);
   clearInputsWithLabels(pickUpAddressContainer);
   getData().then((data) => {
@@ -26,4 +26,4 @@ const initCitiesPoints = () => {
   });
 };
 
-export { selectedCityAddresses, updateSelectedCityAddresses, initCitiesPoints };
+export { selectedCityAddresses, updateSelectedCityAddresses, initMapCitiesPoints };
