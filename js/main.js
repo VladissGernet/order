@@ -3,7 +3,7 @@ import { initialPageCondition } from './initial-page-condition.js';
 import { addPhoneMask } from './masks.js';
 import { pickUpBlock, tabs } from './elements.js';
 import { initPayment } from './init-payment.js';
-import { initMapCitiesPoints } from './init-cities-points.js';
+import { initMapCitiesPoints } from './init-map-cities-points.js';
 import { initPickUpFormValidation } from './validation.js';
 
 initialPageCondition();

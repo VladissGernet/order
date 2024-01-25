@@ -3,7 +3,7 @@ import { pickUpAddressContainer, pickUpCitiesContainer } from './elements.js';
 import { fillCityAddresses } from './fill-city-addresses.js';
 import { createMarkers } from './create-markers.js';
 import { updateMapView } from './util.js';
-import { updateSelectedCityAddresses } from './init-cities-points.js';
+import { updateSelectedCityAddresses } from './init-map-cities-points.js';
 
 const initButtonCityClickHandler = (citiesData, initialLayer, map) => {
   let previousButtonValue = '';

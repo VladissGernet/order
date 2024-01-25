@@ -1,5 +1,5 @@
 import { createMarkers } from './create-markers.js';
-import { selectedCityAddresses } from './init-cities-points.js';
+import { selectedCityAddresses } from './init-map-cities-points.js';
 import { addMainPinMarker, getAddressCoordinates, updateMapView } from './util.js';
 
 const initAddressClickHandler = (container, initialLayer, map) => {
