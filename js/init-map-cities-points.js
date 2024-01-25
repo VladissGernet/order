@@ -16,7 +16,7 @@ const initMapCitiesPoints = () => {
   clearInputsWithLabels(pickUpAddressContainer);
   getData().then((data) => {
     const { cities } = data;
-    fillCitiesContainer(cities);
+    fillCitiesContainer(cities, pickUpCitiesContainer);
     const defaultCityAddresses = cities.find((cityElement) => cityElement.city === defaultCitySelection);
     const { 'delivery-points': deliveryPoints } = defaultCityAddresses;
     updateSelectedCityAddresses(deliveryPoints);
